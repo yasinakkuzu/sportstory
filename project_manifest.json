@@ -1,0 +1,85 @@
+{
+  "project": {
+    "name": "SportStory - Autonomous YouTube Shorts Multi-Agent Engine",
+    "status": "Production Ready (Dual-Channel Multi-Agent System)",
+    "target_platform": "YouTube Shorts (9:16 vertical - 1080x1920)",
+    "channels": {
+      "turkish": {
+        "id": "SportStory TR",
+        "cli_flag": "--lang tr",
+        "voice": "tr-TR-AhmetNeural",
+        "qa_agent": "TurkishVoiceAuditAgent",
+        "lexicon": "engine/phonetics.py"
+      },
+      "global_english": {
+        "id": "SportStory Global",
+        "cli_flag": "--lang en",
+        "voice": "en-US-ChristopherNeural",
+        "subtitles": "Kinetic Desync-Free Token Expansion"
+      }
+    },
+    "architecture_docs": "AGENTS.md",
+    "engine_components": {
+      "orchestrator": "generate_short.py (MasterOrchestrator)",
+      "voice_qa": "engine/agents/voice_audit_agent.py (TurkishVoiceAuditAgent)",
+      "audio_ducking": "engine/workers/audio_worker.py (Sidechain Compression -20dB)",
+      "layout_design": "engine/workers/asset_worker.py (VerticalFlowLayout 3.0 & Centered Cards)",
+      "branding": "SportStory Bullish Shield Transparent Watermark [ 🛡️ SPORTSTORY ]",
+      "branding_assets": {
+        "channel_avatar": "assets/branding/channel_logo_en.jpg",
+        "channel_banner": "assets/branding/channel_banner_en.jpg",
+        "badge_icon": "assets/branding/brand_icon_clean.png"
+      },
+      "subtitles": "engine/subtitles.py (Safe-Zone ASS & Kinetic Overlay at Y:1450)",
+      "video_compiler": "engine/workers/render_worker.py (FFmpeg 60FPS Cross-Dissolve)",
+      "publisher": "engine/workers/publisher_worker.py (YouTube SEO Metadata JSON)"
+    },
+    "content_log": [
+      {
+        "id": "SHORTS_001",
+        "club": "FC Barcelona",
+        "topic": "Neymar $222M aftermath, panic signings & €1.35B debt collapse",
+        "script": "scripts/SHORTS_001_barcelona_mistake.md",
+        "tr_video": "output/SHORTS_001_final_short.mp4",
+        "en_video": "output/SHORTS_001_EN_final_short.mp4",
+        "status": "Rendered & Verified"
+      },
+      {
+        "id": "SHORTS_002",
+        "club": "Chelsea FC",
+        "topic": "8-year contract amortization loophole & UEFA regulatory response",
+        "script": "scripts/SHORTS_002_chelsea_amortization.md",
+        "tr_video": "output/SHORTS_002_final_short.mp4",
+        "en_video": "output/SHORTS_002_EN_final_short.mp4",
+        "status": "Rendered & Verified"
+      },
+      {
+        "id": "SHORTS_003",
+        "club": "Manchester City",
+        "topic": "115 financial breach charges, shell sponsors & Mancini salary",
+        "script": "scripts/SHORTS_003_mancity_115_charges.md",
+        "tr_video": "output/SHORTS_003_final_short.mp4",
+        "en_video": "output/SHORTS_003_EN_final_short.mp4",
+        "status": "Rendered & Verified"
+      },
+      {
+        "id": "SHORTS_004",
+        "club": "PSG",
+        "topic": "Mbappé €500M contract disaster & Real Madrid free transfer",
+        "script": "scripts/SHORTS_004_psg_mbappe_nightmare.md",
+        "tr_video": "output/SHORTS_004_final_short.mp4",
+        "en_video": "output/SHORTS_004_EN_final_short.mp4",
+        "status": "Rendered & Verified"
+      },
+      {
+        "id": "SHORTS_005",
+        "club": "Real Madrid",
+        "topic": "Florentino Perez Santiago Bernabéu 30m greenhouse & €1B revenue machine",
+        "script": "scripts/SHORTS_005_realmadrid_money_machine.md",
+        "tr_video": "output/SHORTS_005_final_short.mp4",
+        "en_video": "output/SHORTS_005_EN_final_short.mp4",
+        "status": "Rendered & Verified"
+      }
+    ]
+  }
+}
