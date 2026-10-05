@@ -40,22 +40,17 @@ from engine.phonetics import (
 
 logger = logging.getLogger("AntigravityEngine.VoiceAuditAgent")
 
-# Türkçe telaffuz riskli yabancı harf öbekleri
-FOREIGN_LETTER_CLUSTERS = [
-    (r'eau\b', 'o'),
-    (r'eaux\b', 'o'),
+# Güvenli harf dönüştürme tablosu (Türkçe TTS'in kekelediği harfler)
+SAFE_LETTER_MAPPINGS = [
     (r'sch', 'ş'),
     (r'ph', 'f'),
-    (r'th', 't'),
-    (r'sz', 's'),
-    (r'cz', 'ç'),
-    (r'oi', 'ua'),
-    (r'ou', 'u'),
-    (r'qu', 'kv'),
     (r'w', 'v'),
     (r'x', 'ks'),
-    (r'q', 'k'),
     (r'ñ', 'n'),
+    (r'ć', 'ç'),
+    (r'č', 'ç'),
+    (r'ž', 'c'),
+    (r'š', 'ş'),
 ]
 
 
@@ -117,7 +112,10 @@ class TurkishVoiceAuditAgent:
         for written, spoken in sorted_lexicon:
             if written == spoken:
                 continue
-            pattern = re.compile(r'\b' + re.escape(written), re.IGNORECASE)
+            if written.isupper() and len(written) <= 4:
+                pattern = re.compile(r'\b' + re.escape(written) + r'\b')
+            else:
+                pattern = re.compile(r'\b' + re.escape(written) + r'\b', re.IGNORECASE)
             if pattern.search(clean_text):
                 clean_text = pattern.sub(spoken, clean_text)
                 corrections.append({
@@ -148,7 +146,7 @@ class TurkishVoiceAuditAgent:
             if c_tok.lower() in TURKISH_EXEMPTIONS:
                 continue
             # Yabancı harf kümesi içeriyor mu?
-            for pattern, repl in FOREIGN_LETTER_CLUSTERS:
+            for pattern, repl in SAFE_LETTER_MAPPINGS:
                 if re.search(pattern, c_tok, re.IGNORECASE) and c_tok not in [c["original"] for c in corrections if "original" in c]:
                     # Otonom fonetik türetimi
                     auto_phonetic = re.sub(pattern, repl, c_tok, flags=re.IGNORECASE)

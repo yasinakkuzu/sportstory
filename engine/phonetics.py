@@ -1,24 +1,38 @@
 """
 Antigravity Sports & Finance Phonetic Intelligence Engine.
-Otonom Telaffuz Denetleyicisi ve Fonetik Ön-İşlemci (v2.0 Master Edition).
+Otonom Telaffuz Denetleyicisi ve Fonetik Ön-İşlemci (v3.0 Pro Sports Edition).
 
-Özellikler:
-1. Türkçe Edge-TTS için küresel futbolcu, teknik direktör, stadyum ve kulüp isimlerini
-   doğal Türkçe spiker fonetiğine çevirir (Örn: Mbappé -> Embappe, Bernabéu -> Bernabeu, Vinicius -> Vinisyus).
-2. Yabancı aksan işaretlerini (é, á, ó, í, ú, ñ, è, ê, ä, ö, ü) temizleyerek TTS kekelemesini sıfırlar.
-3. Finansal sembolleri ve kısaltmaları (€100M, $1B, £60M, %115, PSR, FFP, UEFA, CAS) seslendirilebilir Türkçeye açar.
-4. Spikerin nefes kontrolünü ve tonlamasını bozan noktalama işaretlerini belgesel ritmine göre yumuşatır.
+Felsefe & İlkeler:
+1. "AŞIRI FONETİK BOZULMA" (Over-Phoneticization) ENGELLENDİ:
+   - Türk spor yayıncılığı (TRT Spor, beIN Sports, S Sport) ekolüne sadık kalınır.
+   - Türkçede doğal okunan isimler ASLA Kiril/Rusça veya yapay İngiliz aksanına çevrilmez:
+     * Guardiola -> Guardiola (Gvardiyola DEĞİL!)
+     * Arsenal -> Arsenal (Arsınıl DEĞİL!)
+     * Liverpool -> Liverpool (Livırpul DEĞİL!)
+     * Bayern Münih -> Bayern Münih (Bayörn DEĞİL!)
+     * Aston Villa -> Aston Villa (Astın DEĞİL!)
+     * Erling Haaland -> Erling Holand (Örling DEĞİL!)
+     * Virgil van Dijk -> Virjil Van Dayk (Vörsıl DEĞİL!)
+     * Klopp -> Klopp (Kılop DEĞİL!)
+
+2. GERÇEKTEN GEREKLİ FONETİK DÜZELTMELER:
+   - Türkçede başlangıcı imkansız sesler: Mbappé -> Embappe
+   - Türkçede 'c' harfinin [dʒ] olmasından kaynaklanan bozulmalar: Vinicius -> Vinisyus
+   - Yabancı diftong ve sessiz harfler: De Bruyne -> De Broyne, Todd Boehly -> Tod Boli, Coutinho -> Kutinyo
+   - Slav ve Latin diyakritikleri: Džeko -> Ceko, Tadić -> Tadiç, Livaković -> Livakoviç
+   - Finansal semboller ve kısaltmalar: €100M -> 100 milyon euro, PSR -> Pe-Se-Re, FFP -> Fe-Fe-Pe
 """
 
 import re
 import logging
-from typing import Dict, Tuple
+from typing import Dict
 
 logger = logging.getLogger("AntigravityEngine.Phonetics")
 
-# 1. KAPSAMLI KÜRESEL FUTBOL VE FİNANS FONETİK SÖZLÜĞÜ (TÜRKÇE SPİKER STANDARDI)
+# 1. KAPSAMLI KÜRESEL FUTBOL VE FİNANS FONETİK SÖZLÜĞÜ (DOĞAL TÜRK SPOR YAYINCILIĞI STANDARDI)
 MASTER_PHONETIC_LEXICON: Dict[str, str] = {
     # --- YILDIZ FUTBOLCULAR & EFSANELER ---
+    # Mbappé: Türkçede 'Mb' ile kelime başlayamayacağı için ön-ses türemesi [E] zorunludur
     "Kylian Mbappé": "Kilyan Embappe",
     "Kylian Mbappe": "Kilyan Embappe",
     "Mbappé'yi": "Embappe'yi",
@@ -34,6 +48,7 @@ MASTER_PHONETIC_LEXICON: Dict[str, str] = {
     "Mbappe'den": "Embappe'den",
     "Mbappe": "Embappe",
 
+    # Vinícius: Türkçede 'c' [dʒ] sesidir; düzeltilmezse 'Viniciyus' okunur
     "Vinicius Junior": "Vinisyus Cunyır",
     "Vinícius Júnior": "Vinisyus Cunyır",
     "Vinicius Jr": "Vinisyus Cunyır",
@@ -43,232 +58,111 @@ MASTER_PHONETIC_LEXICON: Dict[str, str] = {
     "Vinicius": "Vinisyus",
     "Vinícius": "Vinisyus",
 
-    "Jude Bellingham": "Cud Belinghem",
-    "Bellingham'ın": "Belinghem'in",
-    "Bellingham'a": "Belinghem'e",
-    "Bellingham": "Belinghem",
-
-    "Erling Haaland": "Örling Holand",
+    # Haaland: İskandinav 'aa' 'o' sesidir, spikerler 'Erling Holand' der
+    "Erling Haaland": "Erling Holand",
     "Haaland'ın": "Holand'ın",
     "Haaland'a": "Holand'a",
     "Haaland": "Holand",
 
+    # Kevin De Bruyne: Flaman 'uy' diftongu
     "Kevin De Bruyne": "Kevin De Broyne",
     "De Bruyne'nin": "De Broyne'nin",
     "De Bruyne'ye": "De Broyne'ye",
     "De Bruyne": "De Broyne",
 
-    "Phil Foden": "Fil Fodın",
-    "Foden'ın": "Fodın'ın",
-    "Foden": "Fil Fodın",
-
-    "Lamine Yamal": "Lamin Yamal",
-    "Yamal'ın": "Yamal'ın",
-    "Yamal": "Lamin Yamal",
-
-    "Robert Lewandowski": "Robert Levandovski",
-    "Lewandowski'nin": "Levandovski'nin",
-    "Lewandowski'ye": "Levandovski'ye",
-    "Lewandowski": "Levandovski",
-
-    "Mohamed Salah": "Muhammed Salah",
-    "Mo Salah": "Muhammed Salah",
-    "Salah'ın": "Salah'ın",
-    "Salah": "Muhammed Salah",
-
-    "Virgil van Dijk": "Vörsıl Van Dayk",
+    # Virgil van Dijk: Hollandaca 'van Dijk' -> 'Van Dayk', 'Virgil' -> 'Virjil'
+    "Virgil van Dijk": "Virjil Van Dayk",
+    "van Dijk": "Van Dayk",
     "Van Dijk'ın": "Van Dayk'ın",
     "Van Dijk": "Van Dayk",
 
+    # Bellingham, Foden, Palmer
+    "Jude Bellingham": "Cud Belinghem",
+    "Bellingham'ın": "Belinghem'in",
+    "Bellingham": "Belinghem",
+    "Phil Foden": "Fil Fodın",
+    "Cole Palmer": "Kol Palmır",
+
+    # Lamine Yamal, Lewandowski
+    "Lamine Yamal": "Lamin Yamal",
+    "Robert Lewandowski": "Robert Levandovski",
+    "Lewandowski'nin": "Levandovski'nin",
+    "Lewandowski": "Levandovski",
+
+    # Núñez
     "Darwin Núñez": "Darvin Nunyez",
     "Darwin Nunez": "Darvin Nunyez",
     "Núñez": "Nunyez",
     "Nunez": "Nunyez",
 
-    "Cole Palmer": "Kol Palmır",
-    "Palmer'ın": "Palmır'ın",
-    "Palmer": "Kol Palmır",
-
-    "Enzo Fernández": "Enzo Fernandez",
-    "Enzo Fernandez": "Enzo Fernandez",
-    "Enzo'ya": "Enzo'ya",
-    "Enzo'nun": "Enzo'nun",
-    "Enzo": "Enzo",
-
+    # Mudryk, Luiz, Osimhen
     "Mykhailo Mudryk": "Mihaylo Mudrik",
     "Mudryk'le": "Mudrik'le",
     "Mudryk'e": "Mudrik'e",
     "Mudryk": "Mudrik",
-
     "Douglas Luiz": "Daglıs Luiz",
-    "Luiz'in": "Luiz'in",
-    "Luiz": "Luiz",
-
     "Victor Osimhen": "Viktor Osimen",
     "Osimhen'in": "Osimen'in",
     "Osimhen": "Osimen",
 
-    "Mauro Icardi": "Mauro İkardi",
-    "Icardi'nin": "İkardi'nin",
-    "Icardi": "İkardi",
-
-    "Dries Mertens": "Dris Mertens",
-    "Mertens": "Mertens",
-
+    # Slav İsimleri (ž -> c, ć -> ç)
     "Edin Džeko": "Edin Ceko",
     "Edin Dzeko": "Edin Ceko",
     "Džeko": "Ceko",
     "Dzeko": "Ceko",
-
     "Dušan Tadić": "Duşan Tadiç",
     "Dusan Tadic": "Duşan Tadiç",
     "Tadić": "Tadiç",
     "Tadic": "Tadiç",
-
     "Sebastian Szymański": "Sebastiyan Şimanski",
     "Sebastian Szymanski": "Sebastiyan Şimanski",
     "Szymański": "Şimanski",
     "Szymanski": "Şimanski",
-
     "Dominik Livaković": "Dominik Livakoviç",
     "Dominik Livakovic": "Dominik Livakoviç",
     "Livaković": "Livakoviç",
     "Livakovic": "Livakoviç",
 
-    "Ciro Immobile": "Çiro İmmobile",
-    "Immobile": "İmmobile",
-
-    "Rafa Silva": "Rafa Silva",
-
-    "Harry Kane": "Heri Keyn",
-    "Kane'in": "Keyn'in",
-    "Kane": "Keyn",
-
-    "Jamal Musiala": "Camal Musiyala",
-    "Musiala": "Musiyala",
-
-    "Florian Wirtz": "Floriyan Virts",
-    "Wirtz": "Virts",
-
+    # Latin & Fransız İsimleri
     "Philippe Coutinho": "Filip Kutinyo",
     "Coutinho'ya": "Kutinyo'ya",
     "Coutinho'nun": "Kutinyo'nun",
     "Coutinho": "Kutinyo",
-
     "Ousmane Dembélé": "Usman Dembele",
     "Ousmane Dembele": "Usman Dembele",
-    "Dembélé'ye": "Dembele'ye",
-    "Dembélé'nin": "Dembele'nin",
     "Dembélé": "Dembele",
-    "Dembele'ye": "Dembele'ye",
     "Dembele": "Dembele",
-
     "Antoine Griezmann": "Antuvan Grizman",
-    "Griezmann'a": "Grizman'a",
-    "Griezmann'ın": "Grizman'ın",
     "Griezmann": "Grizman",
-
-    "Neymar Jr": "Neymar Cunyır",
-    "Neymar'ın": "Neymar'ın",
-    "Neymar'a": "Neymar'a",
-    "Neymar": "Neymar",
-
-    "Lionel Messi": "Liyonel Messi",
-    "Messi'nin": "Messi'nin",
-    "Messi'ye": "Messi'ye",
-    "Messi": "Messi",
-
-    "Cristiano Ronaldo": "Kristiyano Ronaldo",
-    "Ronaldo'nun": "Ronaldo'nun",
-    "Ronaldo'ya": "Ronaldo'ya",
-    "Ronaldo": "Ronaldo",
-
+    "Szoboszlai": "Soboslayi",
     "Samuel Eto'o": "Samuel Eto",
-    "Eto'o'ya": "Eto'ya",
     "Eto'o": "Samuel Eto",
 
-    "Roberto Carlos": "Roberto Karlos",
-
-    "Szoboszlai": "Soboslayi",
-    "Taylor Swift": "Teylor Svift",
-
     # --- TEKNİK DİREKTÖRLER & YÖNETİCİLER ---
-    "Pep Guardiola": "Pep Gvardiyola",
-    "Guardiola'nın": "Gvardiyola'nın",
-    "Guardiola'ya": "Gvardiyola'ya",
-    "Guardiola": "Gvardiyola",
-
+    # NOT: Guardiola DOĞRUDAN 'Guardiola' olarak okunur; asla Gvardiyola yapılmaz!
     "Carlo Ancelotti": "Karlo Ançelotti",
-    "Ancelotti'nin": "Ançelotti'nin",
     "Ancelotti": "Ançelotti",
-
-    "José Mourinho": "Joze Morinyo",
-    "Jose Mourinho": "Joze Morinyo",
+    "José Mourinho": "Jose Morinyo",
+    "Jose Mourinho": "Jose Morinyo",
     "Mourinho": "Morinyo",
-
-    "Jürgen Klopp": "Yürgen Kılop",
-    "Jurgen Klopp": "Yürgen Kılop",
-    "Klopp": "Kılop",
-
-    "Mikel Arteta": "Mikel Arteta",
-    "Arteta": "Arteta",
-
     "Unai Emery": "Unay Emeri",
-    "Emery'nin": "Emeri'nin",
     "Emery": "Emeri",
-
-    "Diego Simeone": "Diyego Simeone",
-    "Simeone": "Simeone",
-
-    "Erik ten Hag": "Erik ten Hag",
-    "Ten Hag": "Ten Hag",
-
-    "Roberto Mancini": "Roberto Mançini",
-    "Mancini'ye": "Mançini'ye",
-    "Mancini'nin": "Mançini'nin",
-    "Mancini": "Mançini",
-
     "Todd Boehly": "Tod Boli",
     "Boehly'nin": "Boli'nin",
-    "Boehly'ye": "Boli'ye",
     "Boehly": "Boli",
-
     "Nasser Al-Khelaifi": "Nasır El Helaifi",
-    "Al-Khelaifi'nin": "El Helaifi'nin",
     "Al-Khelaifi": "El Helaifi",
-
-    "Florentino Pérez": "Florentino Perez",
-    "Florentino Perez": "Florentino Perez",
-    "Pérez": "Perez",
-    "Perez": "Perez",
-
-    "Joan Laporta": "Joan Laporta",
-    "Laporta": "Laporta",
-
+    "John Textor": "Con Tekstır",
+    "Textor": "Tekstır",
+    "Peter Lim": "Pitır Lim",
     "Sheikh Mansour": "Şeyh Mansur",
     "Mansour": "Şeyh Mansur",
-
     "Suleyman Kerimov": "Süleyman Kerimov",
     "Kerimov": "Süleyman Kerimov",
 
-    "John Textor": "Con Tekstır",
-    "Textor'ın": "Tekstır'ın",
-    "Textor": "Tekstır",
-
-    "Peter Lim": "Pitır Lim",
-    "Lim'in": "Lim'in",
-    "Lim": "Pitır Lim",
-
-    "Calisto Tanzi": "Kalisto Tanzi",
-    "Tanzi": "Tanzi",
-
-    "Sheikh Al-Thani": "Şeyh El Sani",
-    "Al-Thani": "El Sani",
-
-    # --- KULÜPLER, STADYUMLAR & FONLAR ---
-    "Santiago Bernabéu": "Santiyago Bernabeu",
-    "Santiago Bernabeu": "Santiyago Bernabeu",
-    "Santiago Barnabeu": "Santiyago Bernabeu",
+    # --- STADYUMLAR & ÖZEL YERLER ---
+    "Santiago Bernabéu": "Santiago Bernabeu",
+    "Santiago Bernabeu": "Santiago Bernabeu",
     "Bernabéu'da": "Bernabeu'da",
     "Bernabéu'ya": "Bernabeu'ya",
     "Bernabéu'nun": "Bernabeu'nun",
@@ -277,89 +171,47 @@ MASTER_PHONETIC_LEXICON: Dict[str, str] = {
     "Bernabeu'ya": "Bernabeu'ya",
     "Bernabeu'nun": "Bernabeu'nun",
     "Bernabeu": "Bernabeu",
-    "Santiago": "Santiyago",
 
     "Parc des Princes": "Park de Prens",
     "Camp Nou": "Kamp Nu",
     "Nou Mestalla": "Nou Mestaya",
     "Mestalla": "Mestaya",
     "Stamford Bridge": "Stemfırd Bric",
-    "Etihad": "İttihad",
     "Old Trafford": "Old Trafırd",
-    "Anfield": "Enfild",
-    "San Siro": "San Siro",
-    "La Masia": "La Masiya",
+    "Etihad": "İttihad",
 
+    # --- KULÜPLER (Sadece okunuşu zor olanlar) ---
     "Manchester City": "Mançestır Siti",
     "Man City": "Mançestır Siti",
     "Manchester United": "Mançestır Yunaytıt",
     "Man United": "Mançestır Yunaytıt",
     "Newcastle United": "Nivkasıl Yunaytıt",
-    "Newcastle'ın": "Nivkasıl'ın",
-    "Newcastle'a": "Nivkasıl'a",
     "Newcastle": "Nivkasıl",
-    "Aston Villa": "Astın Villa",
-    "Villa'yı": "Villa'yı",
     "Tottenham": "Totnım",
-    "Liverpool": "Livırpul",
-    "Arsenal": "Arsınıl",
     "Chelsea": "Çelsi",
     "Chelsea'nin": "Çelsi'nin",
-    "Everton": "Evırtın",
     "Leeds United": "Lids Yunaytıt",
     "Leeds": "Lids",
     "Portsmouth": "Portsmıs",
-
     "Paris Saint-Germain": "Paris Sen Jermen",
     "PSG": "Pe-Se-Je",
-    "Lyon": "Liyon",
     "Bordeaux": "Bordo",
-
-    "Barcelona": "Barselona",
-    "Real Madrid": "Real Madrid",
-    "Atlético Madrid": "Atletiko Madrid",
-    "Atletico Madrid": "Atletiko Madrid",
-    "Valencia": "Valensiya",
-    "Deportivo La Coruña": "Deportivo La Korunya",
-    "Deportivo La Coruna": "Deportivo La Korunya",
-    "Deportivo": "Deportivo",
-    "Super Depor": "Süper Depor",
-    "Malaga CF": "Malaga",
-    "Malaga": "Malaga",
-
-    "Bayern Münih": "Bayörn Münih",
-    "Bayern Munich": "Bayörn Münih",
-    "Borussia Dortmund": "Borusiya Dortmund",
-    "Dortmund": "Dortmund",
     "Schalke 04": "Şalke",
     "Schalke": "Şalke",
-    "Bayer Leverkusen": "Bayır Levırkuzın",
-
-    "Juventus": "Yuventus",
-    "Inter Milan": "İnter Milan",
-    "Inter": "İnter",
-    "AC Milan": "Milan",
-    "Parma": "Parma",
-    "Napoli": "Napoli",
-
     "Rangers FC": "Rencırs",
     "Rangers": "Rencırs",
     "Celtic": "Seltik",
     "Boavista": "Boavişta",
     "Anzhi Makhachkala": "Anji Mahaçkale",
     "Anzhi": "Anji",
-
+    "Super Depor": "Süper Depor",
     "Saudi PIF": "Suudi Pi-Ay-Ef",
-    "Saudi": "Suudi",
     "PIF": "Pi-Ay-Ef",
     "RedBird": "RedBörd",
     "Elliott": "Elyıt",
     "Oaktree Capital": "Oktri Kapital",
     "Oaktree": "Oktri",
-    "Suning": "Suning",
     "777 Partners": "Yedi Yedi Yedi Partnırs",
-    "Abu Dabi'deki": "Abu Dabi'deki",
-    "Abu Dabi": "Abu Dabi",
 
     # --- KISALTMALAR & TERİMLER ---
     "PSR": "Pe-Se-Re",
@@ -370,7 +222,6 @@ MASTER_PHONETIC_LEXICON: Dict[str, str] = {
     "FIFA": "Fifa",
     "TFF": "Te-Fe-Fe",
     "CAS": "Kas",
-    "VAR": "Var",
     "CEO": "Si-i-o",
     "CGI": "Si-Ci-Ay",
     "NFL": "En-Ef-El",
@@ -414,21 +265,28 @@ def expand_financial_notations(text: str) -> str:
     s = text
 
     # Euro (€) dönüşümleri
-    s = re.sub(r'€\s*(\d+(?:[.,]\d+)?)\s*(?:M|milyon|m)\b', r'\1 milyon euro', s, flags=re.IGNORECASE)
-    s = re.sub(r'(\d+(?:[.,]\d+)?)\s*(?:M|milyon|m)\s*€\b', r'\1 milyon euro', s, flags=re.IGNORECASE)
     s = re.sub(r'€\s*(\d+(?:[.,]\d+)?)\s*(?:B|milyar|b)\b', r'\1 milyar euro', s, flags=re.IGNORECASE)
+    s = re.sub(r'(\d+(?:[.,]\d+)?)\s*(?:B|milyar|b)\s*€(?!\w)', r'\1 milyar euro', s, flags=re.IGNORECASE)
+    s = re.sub(r'€\s*(\d+(?:[.,]\d+)?)\s*(?:M|milyon|m)\b', r'\1 milyon euro', s, flags=re.IGNORECASE)
+    s = re.sub(r'(\d+(?:[.,]\d+)?)\s*(?:M|milyon|m)\s*€(?!\w)', r'\1 milyon euro', s, flags=re.IGNORECASE)
     s = re.sub(r'€\s*(\d+)\b', r'\1 euro', s)
+    s = re.sub(r'\b(\d+)\s*€(?!\w)', r'\1 euro', s)
 
     # Dolar ($) dönüşümleri
     s = re.sub(r'\$\s*(\d+(?:[.,]\d+)?)\s*(?:B|milyar|b)\b', r'\1 milyar dolar', s, flags=re.IGNORECASE)
-    s = re.sub(r'(\d+(?:[.,]\d+)?)\s*(?:B|milyar|b)\s*\$\b', r'\1 milyar dolar', s, flags=re.IGNORECASE)
+    s = re.sub(r'(\d+(?:[.,]\d+)?)\s*(?:B|milyar|b)\s*\$(?!\w)', r'\1 milyar dolar', s, flags=re.IGNORECASE)
     s = re.sub(r'\$\s*(\d+(?:[.,]\d+)?)\s*(?:M|milyon|m)\b', r'\1 milyon dolar', s, flags=re.IGNORECASE)
+    s = re.sub(r'(\d+(?:[.,]\d+)?)\s*(?:M|milyon|m)\s*\$(?!\w)', r'\1 milyon dolar', s, flags=re.IGNORECASE)
     s = re.sub(r'\$\s*(\d+)\b', r'\1 dolar', s)
+    s = re.sub(r'\b(\d+)\s*\$(?!\w)', r'\1 dolar', s)
 
     # Sterlin (£) dönüşümleri
+    s = re.sub(r'£\s*(\d+(?:[.,]\d+)?)\s*(?:B|milyar|b)\b', r'\1 milyar sterlin', s, flags=re.IGNORECASE)
+    s = re.sub(r'(\d+(?:[.,]\d+)?)\s*(?:B|milyar|b)\s*£(?!\w)', r'\1 milyar sterlin', s, flags=re.IGNORECASE)
     s = re.sub(r'£\s*(\d+(?:[.,]\d+)?)\s*(?:M|milyon|m)\b', r'\1 milyon sterlin', s, flags=re.IGNORECASE)
-    s = re.sub(r'(\d+(?:[.,]\d+)?)\s*(?:M|milyon|m)\s*£\b', r'\1 milyon sterlin', s, flags=re.IGNORECASE)
+    s = re.sub(r'(\d+(?:[.,]\d+)?)\s*(?:M|milyon|m)\s*£(?!\w)', r'\1 milyon sterlin', s, flags=re.IGNORECASE)
     s = re.sub(r'£\s*(\d+)\b', r'\1 sterlin', s)
+    s = re.sub(r'\b(\d+)\s*£(?!\w)', r'\1 sterlin', s)
 
     # Ondalık sayılar & Özel Milyar İfadeleri
     s = re.sub(r'1[.,]35\s*milyar', '1 milyar 350 milyon', s, flags=re.IGNORECASE)
@@ -459,7 +317,11 @@ def normalize_turkish_speech(script: str) -> str:
     # 2. Sözlükteki uzun ifadeler önce çalışacak şekilde sırala ve kelime sınırı (\b) uygula
     sorted_lexicon = sorted(MASTER_PHONETIC_LEXICON.items(), key=lambda x: len(x[0]), reverse=True)
     for written, phonetic in sorted_lexicon:
-        pattern = re.compile(r'\b' + re.escape(written), re.IGNORECASE)
+        # Kısaltmalar (FFP, PSR, TFF vb.) için büyük/küçük harf duyarlı, diğerleri için duyarsız eşleşme
+        if written.isupper() and len(written) <= 4:
+            pattern = re.compile(r'\b' + re.escape(written) + r'\b')
+        else:
+            pattern = re.compile(r'\b' + re.escape(written) + r'\b', re.IGNORECASE)
         spoken = pattern.sub(phonetic, spoken)
 
     # 3. Kalan yabancı diyakritikleri temizle

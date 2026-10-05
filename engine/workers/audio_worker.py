@@ -72,7 +72,7 @@ class AudioWorker:
             async for chunk in comm.stream():
                 if chunk["type"] == "audio":
                     af.write(chunk["data"])
-                elif chunk["type"] == "WordBoundary":
+                elif chunk["type"] in ("WordBoundary", "SentenceBoundary"):
                     start_sec = chunk["offset"] / 10000000.0
                     dur_sec = chunk["duration"] / 10000000.0
                     text = chunk["text"].strip()
