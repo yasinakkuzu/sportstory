@@ -12,6 +12,7 @@ import imageio_ffmpeg
 from engine.agents.trend_scout_agent import TrendScoutAgent
 from engine.agents.scriptweaver_agent import ScriptWeaverAgent
 from engine.agents.auto_deploy_agent import AutoDeployAgent
+from engine.agents.voice_audit_agent import TurkishVoiceAuditAgent
 from engine.guards.content_guard import get_content_guard
 
 try:
@@ -25,7 +26,7 @@ except ImportError as e:
 FFMPEG_EXE = imageio_ffmpeg.get_ffmpeg_exe()
 
 
-def create_channel_branding_badge(width=1080, height=1920) -> Image.Image:
+def create_channel_branding_badge(width=1080, height=1920, lang: str = "en") -> Image.Image:
     """
     Renders the official SportStory Bullish Shield glass badge in the top-left safe zone.
     Guarantees crisp brand presence on every frame of the video.
@@ -42,7 +43,7 @@ def create_channel_branding_badge(width=1080, height=1920) -> Image.Image:
     icon_size = 38
 
     font = get_subtitle_font(size=24, bold=True)
-    text = "SPORTSTORY"
+    text = "SPORTSTORY TR" if lang == "tr" else "SPORTSTORY"
     bbox = font.getbbox(text)
     tw = bbox[2] - bbox[0]
 
@@ -85,6 +86,7 @@ class MasterOrchestrator:
         self.weaver = ScriptWeaverAgent()
         self.deployer = AutoDeployAgent()
         self.guard = get_content_guard()
+        self.voice_auditor = TurkishVoiceAuditAgent()
 
         if WORKERS_READY:
             self.audio_worker = AudioWorker()
@@ -160,18 +162,36 @@ class MasterOrchestrator:
             try:
                 print("🎧 [AudioWorker] Ses ve Sidechain çalışıyor...")
                 texts = [s.text_en if lang == 'en' else s.text_tr for s in script.scenes]
-                full_text = " ".join(texts)
-                
+                raw_script_text = " ".join(texts)
+
+                # Türkçe Spiker Denetimi ve Fonetik Normalizasyon (TurkishVoiceAuditAgent)
+                if lang == "tr":
+                    print("🕵️ [TurkishVoiceAuditAgent] Türkçe spiker metni denetleniyor ve fonetik uyarlama yapılıyor...")
+                    audited_speech_text, pre_report = self.voice_auditor.audit_and_correct_script(raw_script_text, language="tr")
+                    speech_to_synthesize = audited_speech_text
+                    print(f"✅ [TurkishVoiceAuditAgent] Giriş Denetimi Tamamlandı! Risk Skoru: {pre_report.get('risk_score')}/100, Düzeltme: {pre_report.get('corrections_count')}")
+                else:
+                    speech_to_synthesize = raw_script_text
+                    pre_report = {"language": "en", "status": "PASSED_NON_TR"}
+
                 voice_name = "en-US-ChristopherNeural" if lang == "en" else "tr-TR-AhmetNeural"
+                rate_val = "+0%" if lang == "en" else "+3%"
                 _, aligned_words = self.audio_worker.generate_voiceover(
-                    script=full_text,
+                    script=speech_to_synthesize,
                     target_path=str(raw_voice_path),
                     voice=voice_name,
+                    rate=rate_val,
                     language=lang
                 )
                 self.audio_worker.mix_with_ducking(str(raw_voice_path), None, str(master_audio_path))
 
                 total_duration = aligned_words[-1]["end"] + 1.2 if aligned_words else 15.0
+
+                # Türkçe Akustik & Ritim QA Denetimi
+                if lang == "tr":
+                    post_report = self.voice_auditor.audit_spoken_audio(aligned_words, total_duration)
+                    audit_report_path = output_dir / "voice_audit_report.json"
+                    self.voice_auditor.export_audit_report(pre_report, post_report, str(audit_report_path))
                 
                 is_retro = any(tag in master_bg.lower() for tag in ["pes", "we", "retro", "fifa", "football"])
                 game_title = "PES 6 / Winning Eleven Nostalji Maçı" if is_retro else "Arka Plan Videosu"
@@ -200,7 +220,7 @@ class MasterOrchestrator:
 
                 print("📝 [SubtitleWorker] Kinetik ASS altyazılar işleniyor...")
                 subtitle_renderer = KineticSubtitleRenderer(aligned_words, width=1080, height=1920)
-                branding_overlay = create_channel_branding_badge(width=1080, height=1920)
+                branding_overlay = create_channel_branding_badge(width=1080, height=1920, lang=lang)
 
                 print("🎞️ [RenderCompiler] Tam Ekran FFmpeg Montajlanıyor...")
                 fps = 30
@@ -304,10 +324,25 @@ class MasterOrchestrator:
             ]
             video_tags = list(dict.fromkeys(script_tags + fallback_tags))[:20]
         else:
-            video_title = (getattr(script, 'title_tr', None) or f"{topic} 😱💸 #shorts #futbol")[:60]
+            raw_title = getattr(script, 'title_tr', None) or f"{topic} 😱💸 #shorts"
+            video_title = smart_short_title(raw_title, 'tr')
             base_desc = getattr(script, 'description_tr', None) or f"{topic}\n\nKulüplerin arka plandaki mali çöküşleri ve skandalları."
-            video_desc = f"{base_desc.strip()}\n\nSen bu konu hakkında ne düşünüyorsun? Yorumlara yaz! 👇\n\n🔔 SportStory kanalına abone olmayı unutmayın!\n\n#shorts #futbol #spor #skandal #finans"
-            video_tags = list(dict.fromkeys((getattr(script, 'tags_tr', None) or []) + ["shorts", "futbol", "spor", "skandal", "finans", "viral"]))[:15]
+            if "abone" not in base_desc.lower():
+                video_desc = (
+                    f"{base_desc.strip()}\n\n"
+                    f"💬 Sen bu konu hakkında ne düşünüyorsun? Yorumlara yaz! 👇\n\n"
+                    f"🔔 Futbol skandalları ve kulüp krizleri için @SportStoryTR kanalına abone olun.\n\n"
+                    f"#shorts #futbol #spor #skandal #finans #transfer"
+                )
+            else:
+                video_desc = base_desc
+
+            script_tags = getattr(script, 'tags_tr', None) or []
+            fallback_tags = [
+                "shorts", "futbol", "spor", "skandal", "finans", "transfer",
+                "sportstory", "şampiyonlarligi", "premierlig", "viral"
+            ]
+            video_tags = list(dict.fromkeys(script_tags + fallback_tags))[:20]
 
         with open(meta_file, "w", encoding="utf-8") as mf:
             json.dump({

@@ -9,20 +9,33 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 
 class AutoDeployAgent:
-    def __init__(self):
-        # YouTube yükleme ve kanal doğrulama yetkileri (token.pickle ile tam uyumlu)
+    def __init__(self, lang: str = "en"):
+        # YouTube yükleme ve kanal doğrulama yetkileri (token_tr.pickle ve token_en.pickle destekli)
         self.scopes = [
             "https://www.googleapis.com/auth/youtube.upload",
             "https://www.googleapis.com/auth/youtube.readonly"
         ]
         self.client_secrets_file = os.getenv("YOUTUBE_CLIENT_SECRETS_FILE", "client_secrets.json")
-        self.credentials_file = "token.pickle"
+        self.lang = lang
+        self.credentials_file = self.resolve_token_file(lang)
 
-    def authenticate(self):
+    def resolve_token_file(self, lang: Optional[str] = None) -> str:
+        """Kanal diline göre (TR veya EN) ilgili token dosyasını belirler."""
+        l = (lang or self.lang or "en").lower()
+        lang_token = f"token_{l}.pickle"
+        if os.path.exists(lang_token):
+            return lang_token
+        # Sadece Global İngilizce için geriye dönük uyumluluk (token_en yoksa token.pickle kullan)
+        if l == "en" and os.path.exists("token.pickle"):
+            return "token.pickle"
+        return lang_token
+
+    def authenticate(self, lang: Optional[str] = None):
+        target_token_file = self.resolve_token_file(lang) if lang else self.credentials_file
         creds = None
         # Daha önce giriş yapılmışsa token'ı yükle
-        if os.path.exists(self.credentials_file):
-            with open(self.credentials_file, 'rb') as token:
+        if os.path.exists(target_token_file):
+            with open(target_token_file, 'rb') as token:
                 creds = pickle.load(token)
         
         # Token yoksa veya süresi dolmuşsa yeniden giriş yap
@@ -34,7 +47,7 @@ class AutoDeployAgent:
                 session.mount("https://", HTTPAdapter(max_retries=3))
                 req = Request(session=session)
                 creds.refresh(req)
-                with open(self.credentials_file, 'wb') as token:
+                with open(target_token_file, 'wb') as token:
                     pickle.dump(creds, token)
             else:
                 if not os.path.exists(self.client_secrets_file):
@@ -42,14 +55,16 @@ class AutoDeployAgent:
                     print("[AutoDeploy] Lütfen Google Cloud'dan 'Masaüstü Uygulaması' (Desktop App) JSON dosyasını indirip ana dizine koyun.")
                     return None
                 
-                print("\n[AutoDeploy] 🔐 YOUTUBE KANALINIZA İLK GİRİŞ İZNİ GEREKİYOR...")
-                print("[AutoDeploy] 🌐 Tarayıcınız otomatik olarak açılıyor. Lütfen Google ile izin verin...")
+                lang_label = "TÜRKÇE KANAL" if (lang or self.lang) == "tr" else "GLOBAL KANAL"
+                print(f"\n[AutoDeploy] 🔐 YOUTUBE {lang_label} İÇİN İLK GİRİŞ İZNİ GEREKİYOR...")
+                print(f"[AutoDeploy] 🌐 Tarayıcınız açılıyor. Lütfen ilgili {lang_label} hesabınızı/kanalınızı seçin...")
                 flow = InstalledAppFlow.from_client_secrets_file(self.client_secrets_file, self.scopes)
                 creds = flow.run_local_server(port=8080, open_browser=True)
             
             # Başarılı girişten sonra yetkiyi kaydet (bir daha sormaması için)
-            with open(self.credentials_file, 'wb') as token:
+            with open(target_token_file, 'wb') as token:
                 pickle.dump(creds, token)
+            print(f"[AutoDeploy] 💾 Yetki başarıyla kaydedildi: {target_token_file}")
                 
         return build("youtube", "v3", credentials=creds)
 
@@ -89,8 +104,8 @@ class AutoDeployAgent:
             return False
 
     def deploy(self, video_path: str, lang: str, metadata_path: Optional[str] = None, publish_at: Optional[str] = None) -> Optional[str]:
-        print(f"\n[AutoDeploy] 🚀 Yükleme başlatılıyor: {video_path}")
-        youtube = self.authenticate()
+        print(f"\n[AutoDeploy] 🚀 Yükleme başlatılıyor: {video_path} (Kanal Dili: {lang.upper()})")
+        youtube = self.authenticate(lang=lang)
         if not youtube:
             print("[AutoDeploy] ❌ YouTube API bağlantısı sağlanamadı. Yükleme iptal.")
             return None

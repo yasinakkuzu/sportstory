@@ -34,6 +34,7 @@ from typing import Dict, Any, List, Tuple, Optional
 from engine.phonetics import (
     MASTER_PHONETIC_LEXICON,
     sanitize_foreign_diacritics,
+    expand_financial_notations,
     normalize_turkish_speech
 )
 
@@ -163,19 +164,11 @@ class TurkishVoiceAuditAgent:
                     self._save_learned_entry(c_tok, auto_phonetic)
                     break
 
-        # 4. Finansal Sembol ve Rakam Normalizasyonu
-        # %115 -> yüzde 115
-        if "%" in clean_text:
-            clean_text = re.sub(r'%(\d+)', r'yüzde \1', clean_text)
-            corrections.append({"type": "PERCENT_NORMALIZATION", "applied": "% -> yüzde"})
-
-        # 1.35 milyar -> 1 milyar 350 milyon
-        if "1.35 milyar" in clean_text.lower():
-            clean_text = re.sub(r'1\.35\s*milyar', '1 milyar 350 milyon', clean_text, flags=re.IGNORECASE)
-            corrections.append({"type": "FINANCIAL_EXPANSION", "applied": "1.35 milyar -> 1 milyar 350 milyon"})
-
-        # -60 puan -> eksi 60 puan
-        clean_text = re.sub(r'-(\d+)\s*puan', r'eksi \1 puan', clean_text)
+        # 4. Finansal Sembol ve Rakam Normalizasyonu (€100M, $1B, £60M, %115 vb.)
+        expanded = expand_financial_notations(clean_text)
+        if expanded != clean_text:
+            corrections.append({"type": "FINANCIAL_EXPANSION", "applied": "Semboller seslendirilebilir Türkçeye açıldı"})
+            clean_text = expanded
 
         # 5. Spiker Tonlama Kırılmalarını Yumuşatma
         # Bağırma, tonlama çatlaması ve tiz sıçramalarını sakinleştir

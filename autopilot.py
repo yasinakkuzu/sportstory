@@ -222,32 +222,43 @@ def main():
             "Anzhi Makhachkala: Suleyman Kerimov's Billion-Dollar Fire Sale Disaster",
             "Deportivo La Coruna: The €160M Super Depor Debt Hangover",
             "Boavista: The Portuguese Giant's Rapid Crash From Champions League"
-        ] if args.lang == "en" else None
+        ] if args.lang == "en" else [
+            "Manchester City: 115 Kural İhlali ve Küme Düşme Davası",
+            "Vinicius Jr: 1 Milyar Dolarlık Suudi Teklifi ve Real Madrid İkilemi",
+            "Lyon: John Textor'ın 500 Milyon Euroluk Borcu ve Küme Düşme Tehlikesi",
+            "Inter Milan: Suning'in 400 Milyonluk Borcu ve Oaktree Fonunun Kulübe El Koyması",
+            "Aston Villa: 100 Milyonluk Finansal Kural Çıkmazı ve Acil Oyuncu Satışı",
+            "Anzhi: Bir Milyar Dolarlık Rüyanın Sonu ve Dağıstan Fiyaskosu",
+            "Deportivo La Coruna: Şampiyonlar Ligi Yarı Finalinden 3. Lige Çöküş"
+        ]
         run_batch_schedule(args.batch_schedule, args.interval, args.lang, watch=args.watch, topics=curated_batch_topics)
     elif args.loop:
         run_continuous_loop(args.loop, args.lang)
     elif args.publish_curated:
         publish_curated_archive(args.lang)
     else:
-        print("\n" + "=" * 60)
-        print("🤖 SPORTSTORY AUTOPILOT KONTROL PANELİ")
-        print("=" * 60)
+        print("\n" + "=" * 65)
+        print("🤖 SPORTSTORY OTONOM ÜRETİM VE YAYIN KONTROL PANELİ (TR & EN)")
+        print("=" * 65)
         print("Kullanım Seçenekleri:")
-        print("  1. Hemen Şimdi 1 Video Üret & Yayınla:")
-        print("     python autopilot.py --now")
+        print("  1. Hemen Şimdi 1 Türkçe Video Üret & Yayınla:")
+        print("     python autopilot.py --now --lang tr")
         print()
-        print("  2. Bilgisayar Açıkken Toplu Üretip 12 Saatte Bir Yayınlanacak Şekilde Planla:")
-        print("     python autopilot.py --batch-schedule 10 --interval 12")
+        print("  2. Hemen Şimdi 1 Global (EN) Video Üret & Yayınla:")
+        print("     python autopilot.py --now --lang en")
         print()
-        print("  3. Nöbetçi Mod (Bilgisayar açık kaldıkça kota açıldıkça üretmeye devam eder):")
-        print("     python autopilot.py --batch-schedule 10 --interval 12 --watch")
+        print("  3. Türkçe Kanal İçin Toplu Planlama (Örn: 4 video, 12 saatte bir):")
+        print("     python autopilot.py --batch-schedule 4 --interval 12 --lang tr")
         print()
-        print("  4. Sürekli Otomatik Döngü (Örn: Her 12 Saatte Bir):")
-        print("     python autopilot.py --loop 12")
+        print("  4. Global Kanal İçin Toplu Planlama:")
+        print("     python autopilot.py --batch-schedule 4 --interval 12 --lang en")
         print()
-        print("  5. 5 Küratörlü Başyapıtı (Barcelona, Chelsea vb.) Yükle:")
-        print("     python autopilot.py --publish-curated")
-        print("=" * 60 + "\n")
+        print("  5. Sürekli Otonom Döngü (Örn: Her 12 Saatte Bir):")
+        print("     python autopilot.py --loop 12 --lang tr")
+        print()
+        print("  6. YouTube Kanallarını Yetkilendir (TR & EN):")
+        print("     python authenticate_youtube.py --status")
+        print("=" * 65 + "\n")
 
 
 if __name__ == "__main__":

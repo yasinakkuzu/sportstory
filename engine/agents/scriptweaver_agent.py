@@ -53,6 +53,9 @@ def parse_json_robustly(raw_text: str) -> dict:
 
 MASTER_KNOWLEDGE_FALLBACKS = {
     "city": {
+        "title_tr": "Man City: 115 Kural İhlali Davası! 🚨⚖️ #shorts",
+        "description_tr": "Manchester City 115 mali kural ihlali suçlamasıyla yüzyılın davasında! Şampiyonlukları silinebilir mi yoksa küme mi düşürülecekler? 🔔 Futbol skandalları ve finans hikayeleri için @SportStoryTR kanalına abone olun. #shorts #futbol #mancity #premierleague #sporfinansı",
+        "tags_tr": ["shorts", "futbol", "manchester city", "man city", "premier lig", "115 kural ihlali", "spor finansı", "pep guardiola"],
         "title_en": "Man City: The 115 Charges Trial! 🚨⚖️ #shorts",
         "description_en": "Manchester City is currently facing the Premier League's trial of the century with 115 financial breach charges. Could the champions be stripped of titles or face automatic relegation? 🔔 Subscribe to @SportStory for daily football finance & scandal stories. #shorts #football #mancity #premierleague #sportsfinance",
         "tags_en": ["shorts", "football", "soccer", "man city", "premier league", "115 charges", "sports finance", "pep guardiola"],
@@ -65,6 +68,9 @@ MASTER_KNOWLEDGE_FALLBACKS = {
         ]
     },
     "vinicius": {
+        "title_tr": "Vinicius Jr: 1 Milyar Dolarlık Suudi Teklifi! 💸🇸🇦 #shorts",
+        "description_tr": "Suudi Arabistan Vinicius Junior'a spor tarihinin en büyük sözleşmesini teklif etti. Real Madrid yıldızı 1 milyar euroyu seçecek mi? 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #realmadrid #vinicius #transfer #sporfinansı",
+        "tags_tr": ["shorts", "futbol", "vinicius", "real madrid", "suudi arabistan", "spor finansı", "transferler"],
         "title_en": "Vinicius Jr: The $1B Saudi Dilemma! 💸🇸🇦 #shorts",
         "description_en": "Saudi Arabia tabled an unprecedented €1 Billion total package for Vinicius Junior. Will Real Madrid's superstar take the biggest contract in sports history? 🔔 Subscribe to @SportStory for daily football finance & scandal stories. #shorts #football #realmadrid #vinicius #sportsfinance",
         "tags_en": ["shorts", "football", "soccer", "vinicius", "real madrid", "saudi pro league", "sports finance", "transfers"],
@@ -77,6 +83,9 @@ MASTER_KNOWLEDGE_FALLBACKS = {
         ]
     },
     "inter": {
+        "title_tr": "Inter Milan: 400M€ Borcun Çaldığı Dev! 📉 #shorts",
+        "description_tr": "Inter Serie A şampiyonu oldu ancak Çinli sahip Suning, Amerikan fonu Oaktree'ye 395 milyon euroluk borcunu ödeyemeyince kulübü kaybetti. 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #inter #seriea #sporfinansı",
+        "tags_tr": ["shorts", "futbol", "inter milan", "serie a", "oaktree", "suning", "spor finansı"],
         "title_en": "Inter Milan: How A €400M Debt Stole A Giant! 📉 #shorts",
         "description_en": "Inter Milan won Serie A, but Chinese owners Suning defaulted on a €395M emergency loan to Oaktree Capital, losing the club overnight. 🔔 Subscribe to @SportStory for daily football finance & scandal stories. #shorts #football #inter #seriea #sportsfinance",
         "tags_en": ["shorts", "football", "soccer", "inter milan", "serie a", "oaktree", "suning", "sports finance"],
@@ -89,6 +98,9 @@ MASTER_KNOWLEDGE_FALLBACKS = {
         ]
     },
     "aston villa": {
+        "title_tr": "Aston Villa: 100M€ Harcama Sınırı Çıkmazı! 🚨💸 #shorts",
+        "description_tr": "Aston Villa Şampiyonlar Ligi'ne kaldı ancak Premier Lig'in PSR harcama sınırlarına çarparak acil satış yapmak zorunda kaldı. 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #astonvilla #premierleague #psr",
+        "tags_tr": ["shorts", "futbol", "aston villa", "premier lig", "psr", "spor finansı", "unai emery"],
         "title_en": "Aston Villa: The €100M PSR Red Line! 🚨💸 #shorts",
         "description_en": "Aston Villa qualified for the Champions League, only to face strict Premier League PSR spending limits and emergency player fire sales. 🔔 Subscribe to @SportStory for daily football finance & scandal stories. #shorts #football #astonvilla #premierleague #sportsfinance",
         "tags_en": ["shorts", "football", "soccer", "aston villa", "premier league", "psr", "sports finance", "unai emery"],
@@ -101,6 +113,9 @@ MASTER_KNOWLEDGE_FALLBACKS = {
         ]
     },
     "anzhi": {
+        "title_tr": "Anzhi: Bir Milyar Dolarlık Rüyanın Sonu! 📉 #shorts",
+        "description_tr": "Süleyman Kerimov, Samuel Eto'o ve Roberto Carlos'a yüz milyonlar akıttı ancak bir gecede kulübü tasfiye etti. 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #anzhi #etoo #robertocarlos #sporfinansı",
+        "tags_tr": ["shorts", "futbol", "anzhi", "etoo", "roberto carlos", "spor finansı", "skandal"],
         "title_en": "Anzhi: The Billion-Dollar Dream That Died! 📉 #shorts",
         "description_en": "Suleyman Kerimov spent hundreds of millions on Samuel Eto'o and Roberto Carlos, only to liquidate the Russian superclub overnight. 🔔 Subscribe to @SportStory for daily football finance & scandal stories. #shorts #football #anzhi #sportsfinance",
         "tags_en": ["shorts", "football", "soccer", "anzhi", "etoo", "roberto carlos", "sports finance", "scandal"],
@@ -113,6 +128,9 @@ MASTER_KNOWLEDGE_FALLBACKS = {
         ]
     },
     "deportivo": {
+        "title_tr": "Deportivo: Şampiyonlar Ligi'nden 3. Lige! 📉 #shorts",
+        "description_tr": "Süper Depor Avrupa devlerini dize getirdi ancak 160 milyon euroluk borç kulübü 3. lige kadar sürükledi. 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #deportivo #laliga #sporfinansı",
+        "tags_tr": ["shorts", "futbol", "deportivo", "super depor", "la liga", "spor finansı"],
         "title_en": "Deportivo: From Champions League To Div 3! 📉 #shorts",
         "description_en": "Super Depor stunned Europe, but reckless debt over €160M caused two decades of suffering and third-tier relegation. 🔔 Subscribe to @SportStory for daily football finance & scandal stories. #shorts #football #deportivo #laliga #sportsfinance",
         "tags_en": ["shorts", "football", "soccer", "deportivo", "super depor", "la liga", "sports finance"],
@@ -125,6 +143,9 @@ MASTER_KNOWLEDGE_FALLBACKS = {
         ]
     },
     "barcelona": {
+        "title_tr": "Barcelona: 1 Milyar Euro Nasıl Battı? 💸📉 #shorts",
+        "description_tr": "FC Barcelona Şampiyonlar Ligi kupalarından 1.35 milyar euroluk borç bataklığına nasıl sürüklendi? Lionel Messi'nin vedası ve mali kriz. 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #barcelona #messi #sporfinansı",
+        "tags_tr": ["shorts", "futbol", "barcelona", "messi", "spor finansı", "la liga"],
         "title_en": "How FC Barcelona Lost One Billion Euros! 💸📉 #shorts #football #barcelona",
         "description_en": "Witness the shocking financial collapse of FC Barcelona, from lifting Champions League trophies to drowning in 1.3 billion euros of catastrophic debt. How did a football empire nearly self-destruct? Watch till the end and join the debate in the comments! #shorts #football #soccer #barcelona #messi #sportsfinance",
         "tags_en": ["shorts", "football", "soccer", "barcelona", "messi", "sports finance", "la liga"],
@@ -137,6 +158,9 @@ MASTER_KNOWLEDGE_FALLBACKS = {
         ]
     },
     "leeds": {
+        "title_tr": "Leeds United: Akvaryum Balığından İflasa! 💸🚨 #shorts",
+        "description_tr": "Leeds United Şampiyonlar Ligi yarı finalinden 3. lige ve iflasa nasıl yuvarlandı? 60 milyon sterlinlik borç kumarı. 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #leedsunited #premierleague #sporfinansı",
+        "tags_tr": ["shorts", "futbol", "leeds united", "premier lig", "spor finansı", "skandal"],
         "title_en": "Leeds United: The £60M Goldfish Bowl Bankruptcy! 💸🚨 #shorts #football",
         "description_en": "How did Leeds United go from the Champions League semi-finals to catastrophic financial ruin? Chairman Peter Ridsdale gambled £60 million on future TV revenue—and even leased goldfish for the boardroom at £20 a month. When they missed Europe, the club collapsed.\n\nSubscribe to SportStory for daily sports finance & football scandals.\n\n#shorts #football #soccer #leedsunited #premierleague #finance",
         "tags_en": ["shorts", "football", "soccer", "leeds united", "premier league", "sports finance", "scandal"],
@@ -149,6 +173,9 @@ MASTER_KNOWLEDGE_FALLBACKS = {
         ]
     },
     "juventus": {
+        "title_tr": "Juventus: Sahte Muhasebe ve 15 Puan Silme! ⚖️🚨 #shorts",
+        "description_tr": "Juventus'un 15 puanının silinmesine yol açan Plusvalenza sahte transfer değerleme skandalı. 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #juventus #seriea #plusvalenza",
+        "tags_tr": ["shorts", "futbol", "juventus", "serie a", "plusvalenza", "spor finansı"],
         "title_en": "Juventus: The Plusvalenza Secret Book Scandal! ⚖️🚨 #shorts #football",
         "description_en": "The shocking truth behind Juventus' 15-point penalty and the Plusvalenza scandal. How Italian prosecutors uncovered secret documents showing artificial capital gains on player swaps like Arthur and Pjanic.\n\nSubscribe to SportStory for deep dives into football finance.\n\n#shorts #football #soccer #juventus #seriea #scandal",
         "tags_en": ["shorts", "football", "soccer", "juventus", "serie a", "plusvalenza", "sports finance"],
@@ -161,6 +188,9 @@ MASTER_KNOWLEDGE_FALLBACKS = {
         ]
     },
     "chelsea": {
+        "title_tr": "Chelsea: 1 Milyar Sterlinlik 8 Yıllık Hile! 🤯💸 #shorts",
+        "description_tr": "Todd Boehly 18 ayda 1 milyar sterlin harcamak için 8 yıllık kontrat açığını nasıl kullandı? 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #chelsea #premierleague #transfer",
+        "tags_tr": ["shorts", "futbol", "chelsea", "premier lig", "transfer", "boehly"],
         "title_en": "Chelsea: The £1 Billion 8-Year Contract Loophole! 🤯💸 #shorts #football",
         "description_en": "How Todd Boehly exploited the amortisation loophole to spend over £1 Billion in transfer fees using 8-year contracts, forcing UEFA to intervene and change international football rules.\n\nSubscribe to SportStory for daily sports finance breakdown.\n\n#shorts #football #soccer #chelsea #premierleague #transfer",
         "tags_en": ["shorts", "football", "soccer", "chelsea", "premier league", "transfer", "boehly"],
@@ -173,6 +203,9 @@ MASTER_KNOWLEDGE_FALLBACKS = {
         ]
     },
     "everton": {
+        "title_tr": "Everton: Çifte Puan Silme ve İflas Eşiği! 📉🚨 #shorts",
+        "description_tr": "Everton'ın yeni stadyum borçları, 777 Partners fiyaskosu ve Premier Lig'de iki kez puan silme cezası alması. 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #everton #premierleague #psr",
+        "tags_tr": ["shorts", "futbol", "everton", "premier lig", "psr", "spor finansı"],
         "title_en": "Everton: The 777 Partners Disaster & Double Points Deduction! 📉🚨 #shorts #football",
         "description_en": "How Everton suffered two Premier League points deductions and nearly collapsed under catastrophic stadium debts and the chaotic 777 Partners takeover.\n\nSubscribe to SportStory for daily sports finance breakdowns.\n\n#shorts #football #everton #premierleague #sportsfinance",
         "tags_en": ["shorts", "football", "soccer", "everton", "premier league", "psr", "points deduction", "sports finance"],
@@ -185,6 +218,9 @@ MASTER_KNOWLEDGE_FALLBACKS = {
         ]
     },
     "milan": {
+        "title_tr": "AC Milan: 600M€ RedBird Borç Tuzağı! 🚨💸 #shorts",
+        "description_tr": "AC Milan şampiyon oldu ama kulüp binasını basan mali polis ve RedBird ile Elliott arasındaki 600 milyonluk borç kıskacı. 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #acmilan #seriea #sporfinansı",
+        "tags_tr": ["shorts", "futbol", "ac milan", "serie a", "redbird", "elliott", "spor finansı"],
         "title_en": "AC Milan: The €600M RedBird Debt Trap! 🚨💸 #shorts #football",
         "description_en": "How AC Milan got caught between RedBird Capital and Elliott Management in a €600 million vendor loan debt trap that triggered Italian police raids.\n\nSubscribe to SportStory for daily sports finance.\n\n#shorts #football #acmilan #seriea #sportsfinance",
         "tags_en": ["shorts", "football", "soccer", "ac milan", "serie a", "redbird", "elliott", "sports finance"],
@@ -197,6 +233,9 @@ MASTER_KNOWLEDGE_FALLBACKS = {
         ]
     },
     "lyon": {
+        "title_tr": "Lyon: 500M€ Borç ve Küme Düşme Emri! 😱📉 #shorts",
+        "description_tr": "Fransız devi Lyon, Amerikalı sahip John Textor döneminde 500 milyon euro borçla Ligue 2'ye düşürülme kararıyla yüzleşti. 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #lyon #ligue1 #sporfinansı",
+        "tags_tr": ["shorts", "futbol", "lyon", "ligue 1", "john textor", "spor finansı"],
         "title_en": "Lyon: John Textor's €500M Debt & Provisional Relegation! 😱📉 #shorts #football",
         "description_en": "French football powerhouse Olympique Lyonnais has been hit with a provisional Ligue 1 relegation order over €500 million in debt under American owner John Textor.\n\nSubscribe to SportStory for daily sports business breakdowns.\n\n#shorts #football #lyon #ligue1 #sportsfinance",
         "tags_en": ["shorts", "football", "soccer", "lyon", "ligue 1", "john textor", "sports finance", "eagle football"],
@@ -209,6 +248,9 @@ MASTER_KNOWLEDGE_FALLBACKS = {
         ]
     },
     "parma": {
+        "title_tr": "Parma: Parmalat'ın 14 Milyar Euroluk İflası! 🥛📉 #shorts",
+        "description_tr": "Buffon ve Cannavaro'lu Parma Calcio'yu yok eden tarihin en büyük süt dolandırıcılığı ve iflası. 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #parma #seriea #parmalat",
+        "tags_tr": ["shorts", "futbol", "parma", "serie a", "parmalat", "spor finansı"],
         "title_en": "The $14B Fraud That Killed Parma Calcio! 🥛📉 #shorts #football",
         "description_en": "Parma Calcio won European trophies with Buffon and Cannavaro, but Parmalat's €14 billion corporate dairy fraud imploded overnight, sending the club into bankruptcy.\n\nSubscribe to SportStory for daily sports finance breakdowns.\n\n#shorts #football #parma #seriea #sportsfinance",
         "tags_en": ["shorts", "football", "soccer", "parma", "serie a", "parmalat", "sports finance", "buffon"],
@@ -221,6 +263,9 @@ MASTER_KNOWLEDGE_FALLBACKS = {
         ]
     },
     "rangers": {
+        "title_tr": "Rangers: 54 Şampiyonluktan 4. Lige Tasfiye! 🏴󠁧󠁢󠁳󠁣󠁴󠁿📉 #shorts",
+        "description_tr": "İskoç devi Rangers FC'nin ödenmeyen vergiler yüzünden tasfiye edilip 4. lige sürgün edilişi. 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #rangers #sporfinansı",
+        "tags_tr": ["shorts", "futbol", "rangers", "tasfiye", "spor finansı"],
         "title_en": "How Scotland's Biggest Club Died in 2012! 🏴󠁧󠁢󠁳󠁣󠁴󠁿📉 #shorts #football",
         "description_en": "Rangers FC won 54 Scottish league titles, but catastrophic tax schemes and £24 million in unpaid debt forced total liquidation and exile to the fourth tier.\n\nSubscribe to SportStory for daily football scandals.\n\n#shorts #football #rangers #scottishfootball #sportsfinance",
         "tags_en": ["shorts", "football", "soccer", "rangers fc", "scottish premiership", "liquidation", "sports finance"],
@@ -233,6 +278,9 @@ MASTER_KNOWLEDGE_FALLBACKS = {
         ]
     },
     "portsmouth": {
+        "title_tr": "Portsmouth: Kupadan İflas ve Hapse! 🚨📉 #shorts",
+        "description_tr": "FA Cup zaferinden 4. lige çöküşe: 135 milyon sterlinlik borç, hapse giren kulüp sahipleri ve iflas. 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #portsmouth #premierleague #skandal",
+        "tags_tr": ["shorts", "futbol", "portsmouth", "premier lig", "fa cup", "spor finansı"],
         "title_en": "From FA Cup Winners To Total Liquidation! 🚨📉 #shorts #football",
         "description_en": "In 2008, Portsmouth won the FA Cup. Two years later, £135 million in reckless debt and fraud led to administration, relegation, and owners going to prison.\n\nSubscribe to SportStory for daily sports finance.\n\n#shorts #football #portsmouth #premierleague #sportsfinance",
         "tags_en": ["shorts", "football", "soccer", "portsmouth", "premier league", "fa cup", "sports finance", "scandal"],
@@ -245,6 +293,9 @@ MASTER_KNOWLEDGE_FALLBACKS = {
         ]
     },
     "valencia": {
+        "title_tr": "Valencia: Hayalet Stadyum ve Peter Lim! 👻🚨 #shorts",
+        "description_tr": "Valencia Şampiyonlar Ligi finallerinden küme düşme hattına: 15 yıldır çürüyen Nou Mestalla inşaatı. 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #valencia #laliga #peterlim",
+        "tags_tr": ["shorts", "futbol", "valencia", "la liga", "peter lim", "nou mestalla", "spor finansı"],
         "title_en": "Valencia: The Ghost Stadium & Peter Lim's Ruin! 👻🚨 #shorts #football",
         "description_en": "How Valencia went from Champions League finals to fighting relegation under billionaire Peter Lim, with an abandoned half-built stadium left rotting for 15 years.\n\nSubscribe to SportStory for daily football scandals.\n\n#shorts #football #valencia #laliga #sportsfinance",
         "tags_en": ["shorts", "football", "soccer", "valencia", "la liga", "peter lim", "nou mestalla", "sports finance"],
@@ -257,6 +308,9 @@ MASTER_KNOWLEDGE_FALLBACKS = {
         ]
     },
     "psg": {
+        "title_tr": "PSG: 1.5 Milyar Euroluk UEFA Hile Çarkı! 💸🚨 #shorts",
+        "description_tr": "Paris Saint-Germain Neymar ve Mbappe'ye milyarlar akıtırken UEFA FFP cezalarını nasıl atlattı? 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #psg #uefa #sporfinansı",
+        "tags_tr": ["shorts", "futbol", "psg", "neymar", "mbappe", "uefa ffp", "spor finansı"],
         "title_en": "How PSG Spent $1.5B To Hide UEFA Sanctions! 💸🚨 #shorts #football",
         "description_en": "Paris Saint-Germain spent billions in Qatari funds on Neymar and Mbappe, yet secretly piled up massive losses and UEFA financial fair play probes.\n\nSubscribe to SportStory for sports business analysis.\n\n#shorts #football #psg #uefa #sportsfinance",
         "tags_en": ["shorts", "football", "soccer", "psg", "qsi", "neymar", "mbappe", "uefa ffp", "sports finance"],
@@ -294,9 +348,16 @@ STRICT NARRATIVE RULES:
 9. Scene 4 (The Consequence): Relegation, losing legends, fire sales, or points deductions.
 10. Scene 5 (Climax / Provocative Question): An intense final sentence asking a question to spark debate in the comments.
 11. Provide BOTH English ('text_en') and Turkish ('text_tr') narration for each scene.
-12. 'title_en': MUST be between 35 and 50 characters MAXIMUM (including emojis and #shorts). Format: "[Curiosity Hook] [Emoji] #shorts".
-13. 'description_en': 3-4 sentence high-retention summary with SEO keywords, ending with: "🔔 Subscribe to @SportStory for daily football finance & scandal stories." followed by 5-6 hashtags.
-14. 'tags_en': MUST contain 15 to 20 targeted keywords.
+12. TURKISH NARRATION RULES ('text_tr'):
+    - Professional, dramatic Turkish sports documentary tone (TRT Spor / beIN Sports belgesel standardı).
+    - Grammatically flawless, punchy, spoken Turkish flow (13-18 words per scene).
+    - NEVER produce mechanical literal translations. Use idiomatic sports terminology.
+13. 'title_en': 35 to 50 characters MAXIMUM (including emojis and #shorts). Format: "[Curiosity Hook] [Emoji] #shorts".
+14. 'title_tr': 35 to 50 characters MAXIMUM in Turkish (including emojis and #shorts). Format: "[Merak Uyandıran Başlık] [Emoji] #shorts".
+15. 'description_en': 3-4 sentence high-retention summary with SEO keywords, ending with: "🔔 Subscribe to @SportStory for daily football finance & scandal stories." followed by 5-6 hashtags.
+16. 'description_tr': 3-4 cümlelik Türkçe SEO açıklaması, sonu: "🔔 Futbol skandalları ve kulüp krizleri için @SportStoryTR kanalına abone olun." ve 5-6 etiket.
+17. 'tags_en': 15 to 20 targeted English keywords.
+18. 'tags_tr': 15 to 20 targeted Turkish keywords.
 
 CRITICAL JSON FORMATTING:
 Return ONLY pure JSON. Escape all inner quotes with backslashes. Do NOT put raw unescaped newlines inside strings.
@@ -304,8 +365,11 @@ Return ONLY pure JSON. Escape all inner quotes with backslashes. Do NOT put raw 
 OUTPUT JSON SCHEMA:
 {{
   "title_en": "Title Under 50 Chars 💸 #shorts",
+  "title_tr": "50 Karakter Altı Türkçe Başlık 💸 #shorts",
   "description_en": "Summary text here. 🔔 Subscribe to @SportStory for daily football finance & scandal stories. #shorts #football",
+  "description_tr": "Türkçe özet. 🔔 Futbol skandalları ve kulüp krizleri için @SportStoryTR kanalına abone olun. #shorts #futbol",
   "tags_en": ["shorts", "football", "soccer", "sports finance", "football scandal"],
+  "tags_tr": ["shorts", "futbol", "spor", "spor finansı", "transfer", "skandal"],
   "scenes": [
     {{
       "scene_idx": 1,
@@ -369,6 +433,9 @@ OUTPUT JSON SCHEMA:
                         payload.title_en = data.get("title_en")
                         payload.description_en = data.get("description_en")
                         payload.tags_en = data.get("tags_en")
+                        payload.title_tr = data.get("title_tr")
+                        payload.description_tr = data.get("description_tr")
+                        payload.tags_tr = data.get("tags_tr")
                         return payload
                     else:
                         logger.warning(f"Gemini çıktısı çok kısa veya eksik ({total_words} kelime), alternatif aranıyor.")
@@ -405,4 +472,7 @@ OUTPUT JSON SCHEMA:
         payload.title_en = data["title_en"]
         payload.description_en = data["description_en"]
         payload.tags_en = data["tags_en"]
+        payload.title_tr = data.get("title_tr")
+        payload.description_tr = data.get("description_tr")
+        payload.tags_tr = data.get("tags_tr")
         return payload

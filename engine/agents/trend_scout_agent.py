@@ -45,6 +45,13 @@ TRENDING_SCANDALS_EN = [
 ]
 
 TRENDING_SCANDALS_TR = [
+    "Manchester City: 115 Kural İhlali ve Küme Düşme Davası",
+    "Vinicius Jr: 1 Milyar Dolarlık Suudi Teklifi ve Real Madrid İkilemi",
+    "Barcelona: 1.35 Milyar Euroluk Borç Bataklığı ve Messi'nin Vedası",
+    "Chelsea: 1 Milyar Sterlinlik Harcama ve 8 Yıllık Kontrat Hilesi",
+    "Aston Villa: 100 Milyonluk Finansal Kural Çıkmazı ve Acil Oyuncu Satışı",
+    "Anzhi: Bir Milyar Dolarlık Rüyanın Sonu ve Dağıstan Fiyaskosu",
+    "Deportivo La Coruna: Şampiyonlar Ligi Yarı Finalinden 3. Lige Çöküş",
     "Leeds United: Akvaryum Balıklarından İflasa Futbol Tarihinin En Büyük Çöküşü",
     "Juventus: Sahte Sermaye Skandalı ve 15 Puan Silme Felaketi",
     "Everton: 777 Partners Fiyaskosu ve Arka Arkaya Puan Silme Cezaları",
