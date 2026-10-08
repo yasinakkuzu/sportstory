@@ -214,6 +214,167 @@ def run_batch_schedule(video_count: int = 10, interval_hours: float = 12.0, lang
     return successful_uploads
 
 
+CURATED_UNIFIED_PILLARS_TOPICS = [
+    # --- Pillar 1: Absurd Contracts & Con Artists ---
+    {
+        "pillar": "Pillar 1: Absurd Contracts",
+        "tr": "Stefan Schwarz: Uzaya Gitmesi Yasaklanan Futbolcu",
+        "en": "Stefan Schwarz: The Space Flight Ban Contract Clause"
+    },
+    {
+        "pillar": "Pillar 3: Real-Time Wealth",
+        "tr": "Cristiano Ronaldo: Saniyede 7 Dolar Kazanan Servet Makinesi",
+        "en": "Cristiano Ronaldo: The $7 Per Second Al Nassr Fortune"
+    },
+    {
+        "pillar": "Pillar 1: Absurd Contracts",
+        "tr": "Dennis Bergkamp: Uçak Korkusu ve Uçamayan Hollandalı Maddesi",
+        "en": "Dennis Bergkamp: The Non-Flying Dutchman Contract Clause"
+    },
+    {
+        "pillar": "Pillar 3: Real-Time Wealth",
+        "tr": "Neymar: Özel Jet Filosu ve Suudi Sarayı Talepleri",
+        "en": "Neymar: The Private Jet Fleet & Saudi Palace Demands"
+    },
+    {
+        "pillar": "Pillar 1: Absurd Contracts",
+        "tr": "Giuseppe Reina: Her Yıl Ücretsiz Lego Ev Maddesi",
+        "en": "Giuseppe Reina: The Free Lego House Every Year Clause"
+    },
+    {
+        "pillar": "Pillar 3: Real-Time Wealth",
+        "tr": "Lionel Messi: Apple TV Gelir Ortaklığı ve Inter Miami Hisseleri",
+        "en": "Lionel Messi: The Apple TV Revenue Share & Inter Miami Stake"
+    },
+    {
+        "pillar": "Pillar 1: Absurd Contracts",
+        "tr": "Neil Ruddock: 99.8 Kilo Sınırı ve Kilo Başına Para Cezası",
+        "en": "Neil Ruddock: The 99.8kg Weight Limit Penalty Clause"
+    },
+    {
+        "pillar": "Pillar 3: Real-Time Wealth",
+        "tr": "Kylian Mbappe: Real Madrid'den 150 Milyon Euroluk İmza Primi",
+        "en": "Kylian Mbappe: The 150M Real Madrid Signing Bonus Breakdown"
+    },
+    {
+        "pillar": "Pillar 1: Absurd Contracts",
+        "tr": "Ali Dia: Premier Lig'i Dolandıran 53 Dakikalık Sahte Futbolcu",
+        "en": "Ali Dia: The 53-Minute Premier League Con Artist"
+    },
+    # --- Pillar 2: Club Crises & Scandals ---
+    {
+        "pillar": "Pillar 2: Club Crises",
+        "tr": "Manchester City: 115 Kural İhlali ve Küme Düşme Davası",
+        "en": "Manchester City: The 115 Charges Trial That Could Relegate a Giant"
+    },
+    {
+        "pillar": "Pillar 2: Club Crises",
+        "tr": "Barcelona: 1.35 Milyar Euroluk Borç Bataklığı ve Messi'nin Vedası",
+        "en": "Barcelona: How FC Barcelona Lost One Billion Euros"
+    },
+    {
+        "pillar": "Pillar 2: Club Crises",
+        "tr": "Chelsea: 1 Milyar Sterlinlik Harcama ve 8 Yıllık Kontrat Hilesi",
+        "en": "Chelsea: The £1 Billion 8-Year Contract Loophole"
+    },
+    {
+        "pillar": "Pillar 2: Club Crises",
+        "tr": "Lyon: John Textor'ın 500 Milyon Euroluk Borcu ve Küme Düşme Tehlikesi",
+        "en": "Lyon: John Textor's 500M Debt Crisis & Ligue 1 Relegation Threat"
+    },
+    {
+        "pillar": "Pillar 2: Club Crises",
+        "tr": "Inter Milan: Suning'in 400 Milyonluk Borcu ve Oaktree Fonunun Kulübe El Koyması",
+        "en": "Inter Milan: Oaktree Capital's Takeover From Suning Over 400M Debt"
+    },
+    {
+        "pillar": "Pillar 2: Club Crises",
+        "tr": "Aston Villa: 100 Milyonluk Finansal Kural Çıkmazı ve Acil Oyuncu Satışı",
+        "en": "Aston Villa: PSR Red Line & Unai Emery's 100M Emergency Fire Sale"
+    }
+]
+
+
+def run_dual_channel_production(topic_tr: str = None, topic_en: str = None, interval_hours: float = 12.0) -> dict:
+    """
+    Aynı konuyu hem TÜRKÇE hem İNGİLİZCE üreterek 2 kanala birden planlar:
+    - SportStory TR (token_tr.pickle)
+    - SportStory Global (token_en.pickle)
+    """
+    logger.info("=" * 65)
+    logger.info("🌍 SPORTSTORY ÇİFT KANALLI ÜRETİM (TR & GLOBAL EN)")
+    logger.info("=" * 65)
+
+    orchestrator = MasterOrchestrator()
+    results = {}
+
+    # 1. TÜRKÇE KANAL (SportStory TR)
+    time_tr = get_next_publish_time(interval_hours, lang="tr")
+    iso_tr = time_tr.strftime("%Y-%m-%dT%H:%M:%SZ")
+    local_tr = time_tr.astimezone().strftime("%Y-%m-%d %H:%M")
+    logger.info(f"\n🇹🇷 [1/2] SPORTSTORY TR ÜRETİMİ BAŞLIYOR... Hedef Yayın: {local_tr}")
+    vid_tr = orchestrator.run_autonomous_pipeline(lang="tr", publish_at=iso_tr, topic=topic_tr)
+    if vid_tr:
+        record_scheduled_video(vid_tr, iso_tr, local_tr, lang="tr")
+        results["tr"] = {"id": vid_tr, "schedule": local_tr, "publish_at": iso_tr}
+        logger.info(f"✅ SportStory TR Videosu Başarıyla Planlandı: https://youtu.be/{vid_tr}")
+
+    # 2. GLOBAL KANAL (SportStory Global)
+    time_en = get_next_publish_time(interval_hours, lang="en")
+    iso_en = time_en.strftime("%Y-%m-%dT%H:%M:%SZ")
+    local_en = time_en.astimezone().strftime("%Y-%m-%d %H:%M")
+    logger.info(f"\n🌐 [2/2] SPORTSTORY GLOBAL (EN) ÜRETİMİ BAŞLIYOR... Hedef Yayın: {local_en}")
+    vid_en = orchestrator.run_autonomous_pipeline(lang="en", publish_at=iso_en, topic=topic_en)
+    if vid_en:
+        record_scheduled_video(vid_en, iso_en, local_en, lang="en")
+        results["en"] = {"id": vid_en, "schedule": local_en, "publish_at": iso_en}
+        logger.info(f"✅ SportStory Global Videosu Başarıyla Planlandı: https://youtu.be/{vid_en}")
+
+    return results
+
+
+def run_dual_batch_schedule(video_count: int = 4, interval_hours: float = 12.0, watch: bool = True):
+    """
+    Her iki kanal (SportStory TR ve Global) için N adet videoyu sırayla üretir ve planlar.
+    Pillar 1, Pillar 2 ve Pillar 3 konularını dengeli harmanlar.
+    """
+    logger.info("=" * 65)
+    logger.info(f"🚀 SPORTSTORY ÇİFT KANALLI TOPLU PLANLAMA: {video_count} Konu (Toplam {video_count * 2} Video)")
+    logger.info(f"⏱️ Planlama Aralığı: {interval_hours} saat")
+    logger.info("=" * 65)
+
+    completed_pairs = []
+    for idx in range(video_count):
+        topic_info = CURATED_UNIFIED_PILLARS_TOPICS[idx % len(CURATED_UNIFIED_PILLARS_TOPICS)]
+        pillar = topic_info.get("pillar", "General")
+        logger.info(f"\n=======================================================")
+        logger.info(f"📦 ÇİFT KANAL PAKET #{idx + 1}/{video_count} [{pillar}]")
+        logger.info(f"🇹🇷 TR Konu : {topic_info['tr']}")
+        logger.info(f"🌐 EN Konu : {topic_info['en']}")
+        logger.info(f"=======================================================")
+
+        res = run_dual_channel_production(topic_tr=topic_info["tr"], topic_en=topic_info["en"], interval_hours=interval_hours)
+        completed_pairs.append({
+            "pillar": pillar,
+            "topic_tr": topic_info["tr"],
+            "topic_en": topic_info["en"],
+            "results": res
+        })
+
+    logger.info("\n" + "=" * 65)
+    logger.info("🏆 ÇİFT KANALLI TÜM VİDEOLAR BAŞARIYLA YAYINA PLANLANDI!")
+    logger.info("=" * 65)
+    for i, p in enumerate(completed_pairs, 1):
+        tr_id = p["results"].get("tr", {}).get("id", "N/A")
+        tr_time = p["results"].get("tr", {}).get("schedule", "N/A")
+        en_id = p["results"].get("en", {}).get("id", "N/A")
+        en_time = p["results"].get("en", {}).get("schedule", "N/A")
+        logger.info(f"{i}. [{p['pillar']}]")
+        logger.info(f"   🇹🇷 TR : https://youtu.be/{tr_id} ({tr_time})")
+        logger.info(f"   🌐 EN : https://youtu.be/{en_id} ({en_time})")
+    return completed_pairs
+
+
 def publish_curated_archive(lang: str = "en"):
     from engine.agents.auto_deploy_agent import AutoDeployAgent
     deployer = AutoDeployAgent()
@@ -235,65 +396,60 @@ def publish_curated_archive(lang: str = "en"):
 
 def main():
     parser = argparse.ArgumentParser(description="SportStory 7/24 Autopilot Production Engine")
-    parser.add_argument("--now", action="store_true", help="Hemen şimdi 1 otonom video üretir ve YouTube'a yükler")
+    parser.add_argument("--now", action="store_true", help="Hemen şimdi otonom video üretir ve YouTube'a yükler")
     parser.add_argument("--topic", type=str, default=None, help="Belirli bir kriz/gündem konusu")
     parser.add_argument("--loop", type=float, metavar="HOURS", help="Sürekli otonom döngüyü başlatır (Örn: --loop 4)")
-    parser.add_argument("--batch-schedule", type=int, metavar="COUNT", help="Kota dolana kadar N adet video üretip aralıklı olarak YouTube'a planlar (Örn: --batch-schedule 4)")
+    parser.add_argument("--batch-schedule", type=int, metavar="COUNT", help="N adet videoyu aralıklı olarak YouTube'a planlar (Örn: --batch-schedule 4)")
     parser.add_argument("--interval", type=float, default=12.0, help="Planlanan videolar arası saat aralığı (Varsayılan: 12.0)")
-    parser.add_argument("--watch", action="store_true", default=True, help="Kotaya takılınca kapanmaz; bilgisayar açıkken kotada yer açıldıkça yüklemeye devam eder")
+    parser.add_argument("--watch", action="store_true", default=True, help="Kotaya takılınca kapanmaz; kotada yer açıldıkça yüklemeye devam eder")
     parser.add_argument("--publish-curated", action="store_true", help="Küratörlü 5 başyapıt videoyu YouTube'a aktarır")
-    parser.add_argument("--lang", type=str, choices=["en", "tr"], default="en", help="Yayın dili (Varsayılan: en)")
+    parser.add_argument("--lang", type=str, choices=["en", "tr", "both"], default="both", help="Yayın dili (Varsayılan: both)")
+    parser.add_argument("--dual", action="store_true", help="Her iki kanala (TR & Global EN) eşzamanlı üret ve planla")
     args = parser.parse_args()
 
+    is_dual = args.dual or args.lang == "both"
+
     if args.now:
-        run_single_production(args.lang, topic=args.topic)
+        if is_dual:
+            run_dual_channel_production(topic_tr=args.topic, topic_en=args.topic, interval_hours=args.interval)
+        else:
+            run_single_production(args.lang, topic=args.topic)
     elif args.batch_schedule:
-        curated_batch_topics = [
-            "Vinicius Jr: The $1 Billion Saudi Dilemma & Real Madrid Future",
-            "Lyon: John Textor's 500M Debt Crisis & Ligue 1 Relegation Threat",
-            "Inter Milan: Oaktree Capital's Takeover From Suning Over 400M Debt",
-            "Aston Villa: PSR Red Line & Unai Emery's 100M Emergency Fire Sale",
-            "Anzhi Makhachkala: Suleyman Kerimov's Billion-Dollar Fire Sale Disaster",
-            "Deportivo La Coruna: The €160M Super Depor Debt Hangover",
-            "Boavista: The Portuguese Giant's Rapid Crash From Champions League"
-        ] if args.lang == "en" else [
-            "Manchester City: 115 Kural İhlali ve Küme Düşme Davası",
-            "Vinicius Jr: 1 Milyar Dolarlık Suudi Teklifi ve Real Madrid İkilemi",
-            "Lyon: John Textor'ın 500 Milyon Euroluk Borcu ve Küme Düşme Tehlikesi",
-            "Inter Milan: Suning'in 400 Milyonluk Borcu ve Oaktree Fonunun Kulübe El Koyması",
-            "Aston Villa: 100 Milyonluk Finansal Kural Çıkmazı ve Acil Oyuncu Satışı",
-            "Anzhi: Bir Milyar Dolarlık Rüyanın Sonu ve Dağıstan Fiyaskosu",
-            "Deportivo La Coruna: Şampiyonlar Ligi Yarı Finalinden 3. Lige Çöküş"
-        ]
-        run_batch_schedule(args.batch_schedule, args.interval, args.lang, watch=args.watch, topics=curated_batch_topics)
+        if is_dual:
+            run_dual_batch_schedule(video_count=args.batch_schedule, interval_hours=args.interval, watch=args.watch)
+        else:
+            curated_batch_topics = [
+                t["en"] for t in CURATED_UNIFIED_PILLARS_TOPICS
+            ] if args.lang == "en" else [
+                t["tr"] for t in CURATED_UNIFIED_PILLARS_TOPICS
+            ]
+            run_batch_schedule(args.batch_schedule, args.interval, args.lang, watch=args.watch, topics=curated_batch_topics)
     elif args.loop:
         run_continuous_loop(args.loop, args.lang)
     elif args.publish_curated:
         publish_curated_archive(args.lang)
     else:
         print("\n" + "=" * 65)
-        print("🤖 SPORTSTORY OTONOM ÜRETİM VE YAYIN KONTROL PANELİ (TR & EN)")
+        print("🤖 SPORTSTORY ÇİFT KANALLI OTONOM ÜRETİM PANELİ (TR & EN)")
         print("=" * 65)
         print("Kullanım Seçenekleri:")
-        print("  1. Hemen Şimdi 1 Türkçe Video Üret & Yayınla:")
+        print("  1. İki Kanala da Eşzamanlı 1'er Video Üret & Planla (Varsayılan):")
+        print("     python autopilot.py --now --dual")
+        print()
+        print("  2. İki Kanal İçin Toplu Planlama (Örn: 3'er adet = 6 video, 12 saatte bir):")
+        print("     python autopilot.py --batch-schedule 3 --dual --interval 12")
+        print()
+        print("  3. Sadece Türkçe Kanal İçin 1 Video:")
         print("     python autopilot.py --now --lang tr")
         print()
-        print("  2. Hemen Şimdi 1 Global (EN) Video Üret & Yayınla:")
+        print("  4. Sadece Global (EN) Kanal İçin 1 Video:")
         print("     python autopilot.py --now --lang en")
         print()
-        print("  3. Türkçe Kanal İçin Toplu Planlama (Örn: 4 video, 12 saatte bir):")
-        print("     python autopilot.py --batch-schedule 4 --interval 12 --lang tr")
-        print()
-        print("  4. Global Kanal İçin Toplu Planlama:")
-        print("     python autopilot.py --batch-schedule 4 --interval 12 --lang en")
-        print()
-        print("  5. Sürekli Otonom Döngü (Örn: Her 12 Saatte Bir):")
-        print("     python autopilot.py --loop 12 --lang tr")
-        print()
-        print("  6. YouTube Kanallarını Yetkilendir (TR & EN):")
+        print("  5. YouTube Kanallarını Yetkilendir / Durum:")
         print("     python authenticate_youtube.py --status")
         print("=" * 65 + "\n")
 
 
 if __name__ == "__main__":
     main()
+

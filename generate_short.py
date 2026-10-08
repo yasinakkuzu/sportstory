@@ -14,6 +14,7 @@ from engine.agents.scriptweaver_agent import ScriptWeaverAgent
 from engine.agents.auto_deploy_agent import AutoDeployAgent
 from engine.agents.voice_audit_agent import TurkishVoiceAuditAgent
 from engine.guards.content_guard import get_content_guard
+from engine.visual_card_overlay import create_card_renderer, select_background_for_topic
 
 try:
     from engine.workers.audio_worker import AudioWorker
@@ -96,15 +97,6 @@ class MasterOrchestrator:
         print(f"🎬 SPORTSTORY VİRAL OTONOM MOTOR BAŞLADI | DİL: {lang.upper()}")
         print("="*65)
         
-        # Retro Futbol Modu (Özel PES 6 Nostalji Futbol Oyunları)
-        retro_bgs = ["bg_pes_retro.mp4", "bg_pes_milan.mp4"]
-        valid_retro_bgs = [bg for bg in retro_bgs if os.path.exists(bg)]
-        master_bg = random.choice(valid_retro_bgs) if valid_retro_bgs else "bg_pes_retro.mp4"
-
-        if not os.path.exists(master_bg):
-            print(f"❌ HATA: Arka plan videosu bulunamadı! {master_bg} eksik.")
-            return None
-
         # [Deduplication Guard] Mükerrer olmayan benzersiz konu ve senaryo üret
         chosen_topic = None
         script = None
@@ -138,6 +130,25 @@ class MasterOrchestrator:
         if not script:
             print(f"❌ HATA: {max_attempts} denemede benzersiz bir senaryo üretilemedi. İşlem durduruldu.")
             return None
+
+        # Arka Plan Seçimi: 3 İçerik Sütununa göre dinamik fon (Minecraft / ASMR / Retro PES)
+        master_bg = select_background_for_topic(topic)
+        if not os.path.exists(master_bg):
+            for fallback_bg in ["bg_pes_retro.mp4", "bg_pes_milan.mp4", "bg_minecraft.mp4", "bg_asmr.mp4"]:
+                if os.path.exists(fallback_bg):
+                    master_bg = fallback_bg
+                    break
+
+        if not os.path.exists(master_bg):
+            print(f"❌ HATA: Arka plan videosu bulunamadı! {master_bg} eksik.")
+            return None
+
+        print(f"🎬 [BackgroundSelector] Seçilen Arka Plan: {master_bg} (Konu: '{topic}')")
+
+        # Görsel Kart Katmanı (Fotoğraf & Lüks Çerçeve)
+        card_renderer = create_card_renderer(topic, full_text)
+        if card_renderer:
+            print(f"📸 [VisualCardOverlay] '{card_renderer.entity_name}' için lüks portre kartı hazırlandı!")
 
         output_dir = Path(f"output/{short_id}")
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -242,11 +253,19 @@ class MasterOrchestrator:
                     frame_img = Image.frombytes("RGB", (1080, 1920), raw_frame).convert("RGBA")
                     # 1. Overlay Channel Branding Watermark
                     frame_img = Image.alpha_composite(frame_img, branding_overlay)
-                    # 2. Overlay Kinetic Subtitles
-                    sub_overlay = subtitle_renderer.render_overlay(current_time)
-                    # Retro oyun çim renginin altyazıları boğmaması için %35 kontrast cam perde
+                    # 2. Kontrast perdesi (%35 siyah cam)
                     dark_overlay = Image.new("RGBA", (1080, 1920), (0, 0, 0, 85))
                     frame_img = Image.alpha_composite(frame_img, dark_overlay)
+
+                    # 3. Dynamic Visual Photo Card Overlay (Oyuncu / Kulüp Görsel Kartı)
+                    if card_renderer:
+                        card_res = card_renderer.render_overlay(current_time, start_time=5.5, duration=6.0)
+                        if card_res:
+                            card_img, card_pos = card_res
+                            frame_img.paste(card_img, card_pos, card_img)
+
+                    # 4. Overlay Kinetic Subtitles
+                    sub_overlay = subtitle_renderer.render_overlay(current_time)
                     final_frame = Image.alpha_composite(frame_img, sub_overlay).convert("RGB")
                     
                     try:

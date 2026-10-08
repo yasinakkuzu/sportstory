@@ -321,6 +321,156 @@ MASTER_KNOWLEDGE_FALLBACKS = {
             {"scene_idx": 4, "text_en": "When Mbappe walked away for free to Real Madrid, PSG was left with massive annual operating losses.", "text_tr": "Mbappe bedavaya Real Madrid'e gittiğinde PSG devasa yıllık işletme zararlarıyla baş başa kaldı.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
             {"scene_idx": 5, "text_en": "Did state-backed billions ruin modern football or make it more entertaining? Drop your thoughts below!", "text_tr": "Devlet destekli milyarlar modern futbolu mahvetti mi yoksa güzelleştirdi mi? Yorumlara yaz!", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": True}
         ]
+    },
+    "schwarz": {
+        "title_tr": "Uzaya Gitmesi Yasaklanan Futbolcu! 🚀⚽ #shorts",
+        "description_tr": "Stefan Schwarz ve spor tarihinin en inanılmaz sözleşme maddesi: Uzaya seyahat yasağı! 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #stefanschwarz #sözleşme #absürt #premierleague",
+        "tags_tr": ["shorts", "futbol", "stefan schwarz", "absürt sözleşmeler", "sunderland", "premier lig", "uzay", "ilginç maddeler"],
+        "title_en": "The Bizarre Space Ban Contract! 🚀⚽ #shorts",
+        "description_en": "In 1999, Sunderland legally banned Swedish international Stefan Schwarz from traveling to outer space! 🔔 Subscribe to @SportStory for incredible football trivia & scandals. #shorts #football #soccer #stefanschwarz #contracts",
+        "tags_en": ["shorts", "football", "soccer", "stefan schwarz", "bizarre contracts", "sunderland", "premier league", "space clause"],
+        "scenes": [
+            {"scene_idx": 1, "text_en": "In 1999, Sunderland signed Swedish star Stefan Schwarz with one of the most insane clauses in sports history.", "text_tr": "1999'da Sunderland, İsveçli yıldız Stefan Schwarz ile spor tarihinin en çılgın sözleşmesine imza attı.", "visual_prompt": "cinematic football", "is_hook": True, "is_cta": False},
+            {"scene_idx": 2, "text_en": "Schwarz was fascinated by space travel and publicly expressed a desire to book the world's first commercial flight to space.", "text_tr": "Schwarz uzay yolculuğuna meraklıydı ve ilk ticari uzay uçuşuna bilet alma arzusunu açıklamıştı.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 3, "text_en": "Terrified of losing their star to orbit, Sunderland legally banned him from traveling to outer space during his contract.", "text_tr": "Yıldızını uzay boşluğuna kaptırmaktan korkan Sunderland, sözleşmeye oyuncunun uzaya çıkmasını yasaklayan resmi bir madde koydu.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 4, "text_en": "If Schwarz boarded a spacecraft or rocket before 2004, his multi-million-pound contract would be terminated instantly.", "text_tr": "Eğer Schwarz 2004'ten önce bir uzay aracına binerse milyonluk sözleşmesi anında feshedilecekti.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 5, "text_en": "Is this the most ridiculous clause ever written into a football contract? Share your thoughts below!", "text_tr": "Bu bir futbol sözleşmesine yazılmış en absürt madde mi? Yorumlara yaz!", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": True}
+        ]
+    },
+    "ronaldo": {
+        "title_tr": "Ronaldo: Saniyede 7$ Kazanan Makine! 💸⌛ #shorts",
+        "description_tr": "Cristiano Ronaldo Al Nassr'da saniyede 7 dolar, uykusunda 38 bin dolar kazanıyor! 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #ronaldo #alnassr #servet #maaş",
+        "tags_tr": ["shorts", "futbol", "cristiano ronaldo", "ronaldo", "al nassr", "maaş", "servet", "para"],
+        "title_en": "Ronaldo: The $7 Per Second Machine! 💸⌛ #shorts",
+        "description_en": "Cristiano Ronaldo earns €200M every single year at Al Nassr. That breaks down to $7 every second of the day! 🔔 Subscribe to @SportStory for daily football wealth breakdowns. #shorts #football #ronaldo #cr7 #salary",
+        "tags_en": ["shorts", "football", "soccer", "cristiano ronaldo", "ronaldo", "cr7", "al nassr", "sports finance", "salary"],
+        "scenes": [
+            {"scene_idx": 1, "text_en": "Cristiano Ronaldo earns an astronomical two hundred million euros every single year at Saudi club Al Nassr.", "text_tr": "Cristiano Ronaldo, Suudi kulübü Al Nassr'da yılda tam iki yüz milyon euro kazanıyor.", "visual_prompt": "cinematic football", "is_hook": True, "is_cta": False},
+            {"scene_idx": 2, "text_en": "That breaks down to nearly seventeen million euros a month, or an unbelievable six hundred thousand euros every day.", "text_tr": "Bu ayda yaklaşık on yedi milyon euroya, yani günde inanılmaz altı yüz bin euroya denk geliyor.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 3, "text_en": "While you are watching this short, Ronaldo effortlessly generates seven dollars every single second of the clock.", "text_tr": "Siz bu videoyu izlerken Ronaldo her saniye saat gibi cebine tam yedi dolar koyuyor.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 4, "text_en": "Even during nine hours of sleep, his bank account automatically inflates by over thirty-eight thousand dollars.", "text_tr": "Gece dokuz saatlik uykusunda bile banka hesabı kendiliğinden tam otuz sekiz bin dolar şişiyor.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 5, "text_en": "Does any athlete on planet Earth truly deserve this level of wealth? Drop your honest verdict!", "text_tr": "Dünya üzerinde herhangi bir sporcu bu seviyede bir serveti hak ediyor mu? Fikrini yaz!", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": True}
+        ]
+    },
+    "bergkamp": {
+        "title_tr": "Bergkamp: Uçamayan Hollandalı Maddesi! ✈️❌ #shorts",
+        "description_tr": "Arsenal efsanesi Dennis Bergkamp'ın uçak korkusu ve sözleşmesindeki uçuş yasağı maddesi. 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #bergkamp #arsenal #premierleague",
+        "tags_tr": ["shorts", "futbol", "dennis bergkamp", "arsenal", "uçak korkusu", "premier lig", "ilginç hikayeler"],
+        "title_en": "Bergkamp: The Non-Flying Clause! ✈️❌ #shorts",
+        "description_en": "Why Arsenal legend Dennis Bergkamp drove 30 hours across Europe instead of flying with teammates. 🔔 Subscribe to @SportStory for daily football trivia & stories. #shorts #football #bergkamp #arsenal",
+        "tags_en": ["shorts", "football", "soccer", "dennis bergkamp", "bergkamp", "arsenal", "premier league", "trivia"],
+        "scenes": [
+            {"scene_idx": 1, "text_en": "Arsenal legend Dennis Bergkamp terrorized Premier League defenses, yet possessed a paralyzing fear of boarding commercial airplanes.", "text_tr": "Arsenal efsanesi Dennis Bergkamp Premier Lig savunmalarını yıktı ancak felç edici bir uçak korkusuna sahipti.", "visual_prompt": "cinematic football", "is_hook": True, "is_cta": False},
+            {"scene_idx": 2, "text_en": "After a terrifying engine failure scare during the 1994 World Cup, Bergkamp vowed never to fly again.", "text_tr": "1994 Dünya Kupası'ndaki korkunç motor arızasının ardından Bergkamp bir daha asla uçağa binmeyeceğine yemin etti.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 3, "text_en": "He demanded an explicit contractual clause releasing him from flying to international European Champions League away fixtures.", "text_tr": "Avrupa kupası deplasmanlarına uçakla gitme zorunluluğunu kaldıran özel bir sözleşme maddesi talep etti.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 4, "text_en": "While teammates flew comfortably, Bergkamp drove across Europe by car and train for thirty hours to play.", "text_tr": "Takım arkadaşları uçakla uçarken, Bergkamp maçlara yetişmek için Avrupa'yı tren ve arabayla 30 saatte aştı.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 5, "text_en": "Would a modern superstar ever travel thirty hours by car to play an away match? Tell us!", "text_tr": "Günümüz süper yıldızlarından biri deplasmana arabayla 30 saat gidip oynar mıydı? Yorumlara yaz!", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": True}
+        ]
+    },
+    "neymar": {
+        "title_tr": "Neymar: Suudi Sarayı ve Özel Jetler! 🛩️🏰 #shorts",
+        "description_tr": "Neymar'ın Al Hilal sözleşmesindeki 25 odalı saray, özel jet ve 500 bin euroluk post primi. 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #neymar #alhilal #servet",
+        "tags_tr": ["shorts", "futbol", "neymar", "al hilal", "suudi arabistan", "özel jet", "transfer", "maaş"],
+        "title_en": "Neymar: Private Jets & Saudi Palaces! 🛩️🏰 #shorts",
+        "description_en": "Neymar's Al Hilal deal included a 25-room palace, 24/7 private jet, and €500,000 for each social media post! 🔔 Subscribe to @SportStory for sports finance stories. #shorts #football #neymar",
+        "tags_en": ["shorts", "football", "soccer", "neymar", "al hilal", "saudi pro league", "private jet", "sports finance"],
+        "scenes": [
+            {"scene_idx": 1, "text_en": "When Neymar signed his blockbuster Saudi contract with Al Hilal, wages were only a fraction of the deal.", "text_tr": "Neymar, Al Hilal ile devasa Suudi sözleşmesini imzaladığında maaşı anlaşmanın sadece küçük bir parçasıydı.", "visual_prompt": "cinematic football", "is_hook": True, "is_cta": False},
+            {"scene_idx": 2, "text_en": "Neymar demanded a twenty-five-room luxury mansion complete with three saunas and a personal fleet of luxury supercars.", "text_tr": "Neymar yirmi beş odalı, üç saunalı lüks bir malikane ve özel süper lüks araba filosu talep etti.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 3, "text_en": "His contract included a private jet available twenty-four seven for family travel, fully paid by the club.", "text_tr": "Sözleşmesinde kulüp tarafından karşılanan, ailesi için 7/24 hazır bekleyen özel bir jet yer aldı.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 4, "text_en": "Plus an unbelievable five hundred thousand euros bonus for every single social media post promoting Saudi tourism.", "text_tr": "Üstüne Suudi turizmini öven her bir sosyal medya paylaşımı için beş yüz bin euro bonus aldı.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 5, "text_en": "Are football superstar demands reaching completely absurd levels of entitlement? Share your thoughts below!", "text_tr": "Futbol yıldızlarının talepleri artık akıl almaz bir şımarıklık seviyesine mi ulaştı? Yorumlarda buluşalım!", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": True}
+        ]
+    },
+    "reina": {
+        "title_tr": "Reina: Her Yıl Ücretsiz Lego Ev! 🧱🏠 #shorts",
+        "description_tr": "Giuseppe Reina'nın Arminia Bielefeld sözleşmesindeki bedava ev maddesi ve kulübün Lego cevabı! 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #absürt #lego #transfer",
+        "tags_tr": ["shorts", "futbol", "giuseppe reina", "lego", "arminia bielefeld", "ilginç maddeler", "sözleşme"],
+        "title_en": "Reina: The Free Lego House Clause! 🧱🏠 #shorts",
+        "description_en": "Giuseppe Reina demanded a new house for every year of his contract—so the club cleverly built him miniature Lego homes! 🔔 Subscribe to @SportStory for football comedy & trivia. #shorts #football",
+        "tags_en": ["shorts", "football", "soccer", "giuseppe reina", "lego", "bizarre contracts", "bundesliga", "trivia"],
+        "scenes": [
+            {"scene_idx": 1, "text_en": "When German striker Giuseppe Reina signed for Arminia Bielefeld, he included a hilariously ambiguous contractual demand.", "text_tr": "Alman forvet Giuseppe Reina, Arminia Bielefeld'e imza atarken sözleşmesine inanılmaz komik bir madde koydurdu.", "visual_prompt": "cinematic football", "is_hook": True, "is_cta": False},
+            {"scene_idx": 2, "text_en": "Reina demanded that the club build him a brand-new house for every single year of his contract.", "text_tr": "Reina kulübün, sözleşmesinin geçerli olduğu her yıl için kendisine yepyeni bir ev inşa etmesini şart koştu.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 3, "text_en": "However, the clever striker completely forgot to specify the size, materials, or dimensions of the promised home.", "text_tr": "Ancak uyanık forvet, vadettiği evin boyutunu, malzemesini veya metrekaresini sözleşmede belirtmeyi unuttu.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 4, "text_en": "Exploiting the loophole, club executives proudly presented him with miniature houses made entirely of plastic Lego bricks.", "text_tr": "Bu açıktan yararlanan kulüp yöneticileri, ona her yıl gururla plastikten Lego evler hediye etti.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 5, "text_en": "Is this the funniest contract loophole outsmarting ever recorded in football history? Let us know below!", "text_tr": "Bu futbol tarihinin en komik sözleşme kurnazlığı ve golü müydü? Yorumlara yaz!", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": True}
+        ]
+    },
+    "ruddock": {
+        "title_tr": "Ruddock: 99.8 Kilo ve Ağır Para Cezası! ⚖️🍔 #shorts",
+        "description_tr": "Neil Ruddock ve Crystal Palace sözleşmesindeki 99.8 kilo sınırı ile kilo başına astronomik para cezası. 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #ruddock #premierleague",
+        "tags_tr": ["shorts", "futbol", "neil ruddock", "kilo cezası", "crystal palace", "premier lig", "ilginç hikayeler"],
+        "title_en": "Ruddock: The 99.8kg Weight Clause! ⚖️🍔 #shorts",
+        "description_en": "Crystal Palace fined Neil Ruddock 10% of his wages every time he exceeded 99.8kg on the scale! 🔔 Subscribe to @SportStory for daily football stories. #shorts #football #ruddock",
+        "tags_en": ["shorts", "football", "soccer", "neil ruddock", "weight clause", "crystal palace", "premier league"],
+        "scenes": [
+            {"scene_idx": 1, "text_en": "Hard-tackling defender Neil Ruddock was notorious for his immense talent, heavy drinking, and uncontrollable love of junk food.", "text_tr": "Sert savunmacı Neil Ruddock yeteneği kadar kontrolsüz abur cubur aşkı ve kilolarıyla ünlüydü.", "visual_prompt": "cinematic football", "is_hook": True, "is_cta": False},
+            {"scene_idx": 2, "text_en": "When Crystal Palace signed him in 2000, chairman Harry Redknapp inserted a strict ninety-nine-point-eight kilogram weight cap clause.", "text_tr": "Crystal Palace 2000'de ona imza attırırken sözleşmesine katı bir 99.8 kilo sınırı maddesi ekletti.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 3, "text_en": "For every single weigh-in where Ruddock exceeded the limit, he was fined a massive ten percent of his salary.", "text_tr": "Ruddock'ın bu kilo sınırını aştığı her tartı gününde maaşının tam yüzde onu ceza olarak kesildi.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 4, "text_en": "Ruddock was weighed eight times in his first season, paying thousands in fines while struggling to fit his shorts.", "text_tr": "İlk sezonunda sekiz kez tartıldı, formasının içine sığmaya çalışırken binlerce sterlin ceza ödedi.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 5, "text_en": "Should modern clubs dock player wages for being overweight, or is that too harsh? Comment below!", "text_tr": "Modern kulüpler kilo alan oyuncuların maaşını kesmeli mi yoksa bu çok mu sert? Yorumlara yaz!", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": True}
+        ]
+    },
+    "ali dia": {
+        "title_tr": "Ali Dia: Premier Lig'i Dolandıran Sahte Futbolcu! 🎭🚨 #shorts",
+        "description_tr": "Kendisini George Weah'ın kuzeni olarak tanıtıp Premier Lig'de forma giyen Ali Dia'nın akıl almaz hikayesi. 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #alidia #premierleague #dolandırıcı",
+        "tags_tr": ["shorts", "futbol", "ali dia", "sahte futbolcu", "southampton", "premier lig", "skandal", "george weah"],
+        "title_en": "Ali Dia: The 53-Minute Premier League Con! 🎭🚨 #shorts",
+        "description_en": "How a university student faked a phone call from George Weah to play in the Premier League for Southampton! 🔔 Subscribe to @SportStory for football scandals. #shorts #football #alidia",
+        "tags_en": ["shorts", "football", "soccer", "ali dia", "premier league", "con artist", "southampton", "scandal"],
+        "scenes": [
+            {"scene_idx": 1, "text_en": "In 1996, Southampton manager Graeme Souness received a phone call claiming to be world superstar George Weah.", "text_tr": "1996'da Southampton menajeri Graeme Souness, kendisini dünya yıldızı George Weah olarak tanıtan bir telefon aldı.", "visual_prompt": "cinematic football", "is_hook": True, "is_cta": False},
+            {"scene_idx": 2, "text_en": "The caller recommended his alleged cousin, Ali Dia, claiming he played for Paris Saint-Germain and Senegal.", "text_tr": "Arayan kişi Paris Saint-Germain'de oynadığını iddia ettiği kuzeni Ali Dia'yı önerdi.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 3, "text_en": "In reality, it was a university student friend executing the most audacious con in Premier League history.", "text_tr": "Aslında bu Premier Lig tarihinin en cüretkar dolandırıcılığını yapan bir üniversite öğrencisiydi.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 4, "text_en": "Dia signed, came on as a substitute against Leeds, played horribly for fifty-three minutes, and vanished forever.", "text_tr": "Dia sözleşmeyi imzaladı, Leeds maçında 53 dakika rezil bir futbol oynadı ve ertesi sabah sonsuza dek kayboldu.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 5, "text_en": "How could a Premier League club get fooled so easily without a background check? Share your verdict!", "text_tr": "Bir Premier Lig kulübü tek bir kontrol bile yapmadan nasıl böyle kandırıldı? Fikrini yaz!", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": True}
+        ]
+    },
+    "firmino": {
+        "title_tr": "Firmino: Arsenal'a Satılamaz Maddesi! 🚫🔴 #shorts",
+        "description_tr": "Liverpool'un Roberto Firmino sözleşmesine koyduğu Arsenal'a transfer yasağı maddesi! 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #firmino #liverpool #arsenal #transfer",
+        "tags_tr": ["shorts", "futbol", "roberto firmino", "liverpool", "arsenal", "transfer", "premier lig"],
+        "title_en": "Firmino: The Anti-Arsenal 82M Clause! 🚫🔴 #shorts",
+        "description_en": "Liverpool inserted an £82M buyout clause in Roberto Firmino's contract that was valid for any club in the world—except Arsenal! 🔔 Subscribe to @SportStory. #shorts #football",
+        "tags_en": ["shorts", "football", "soccer", "roberto firmino", "firmino", "liverpool", "arsenal", "transfer clause"],
+        "scenes": [
+            {"scene_idx": 1, "text_en": "When Liverpool signed Roberto Firmino in 2015, they included a petty release clause aimed at their fiercest rival.", "text_tr": "Liverpool 2015'te Roberto Firmino'yu aldığında en ezeli rakibini hedef alan intikam dolu bir madde ekledi.", "visual_prompt": "cinematic football", "is_hook": True, "is_cta": False},
+            {"scene_idx": 2, "text_en": "Two years earlier, Arsenal infamously bid forty million and one pounds to trigger Luis Suarez's release clause.", "text_tr": "İki yıl önce Arsenal, Luis Suarez'i almak için kırk milyon bir sterlin teklif ederek Liverpool'u çıldırtmıştı.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 3, "text_en": "Furious Liverpool owners vowed never to be humiliated by Arsenal's aggressive transfer tactics ever again.", "text_tr": "Öfkeli Liverpool yönetimi Arsenal'ın bu transfer oyunlarıyla bir daha asla küçük düşmeyeceğine yemin etti.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 4, "text_en": "Firmino's contract had an eighty-two-million-pound buyout valid for any European club, strictly forbidding Arsenal from ever bidding.", "text_tr": "Firmino'nun sözleşmesine tüm kulüpler için 82 milyonluk serbest kalma maddesi kondu, Arsenal ise kesin olarak yasaklandı.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 5, "text_en": "Was this brilliant executive pettiness or an unprofessional transfer grudge? Let us know below!", "text_tr": "Bu zekice bir intikam mıydı yoksa profesyonellik dışı bir kapris mi? Yorumlarda buluşalım!", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": True}
+        ]
+    },
+    "messi": {
+        "title_tr": "Messi: Apple TV Gelir Ortaklığı ve Servet! 🍏💰 #shorts",
+        "description_tr": "Lionel Messi'nin Inter Miami sözleşmesindeki Apple TV ve Adidas gelir ortaklığı imparatorluğu. 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #messi #intermiami #appletv #servet",
+        "tags_tr": ["shorts", "futbol", "lionel messi", "messi", "inter miami", "apple tv", "spor finansı", "servet"],
+        "title_en": "Messi: The Apple TV & MLS Revenue Empire! 🍏💰 #shorts",
+        "description_en": "Lionel Messi rejected €1 Billion from Saudi Arabia for a genius equity stake in Inter Miami and Apple TV revenue shares! 🔔 Subscribe to @SportStory. #shorts #football #messi",
+        "tags_en": ["shorts", "football", "soccer", "lionel messi", "messi", "inter miami", "mls", "apple tv", "sports business"],
+        "scenes": [
+            {"scene_idx": 1, "text_en": "Lionel Messi rejected a one-billion-dollar Saudi package to sign an unprecedented business deal in Major League Soccer.", "text_tr": "Lionel Messi bir milyar dolarlık Suudi teklifini reddederek Amerikan liginde eşi görülmemiş bir anlaşmaya imza attı.", "visual_prompt": "cinematic football", "is_hook": True, "is_cta": False},
+            {"scene_idx": 2, "text_en": "Instead of a normal salary, Messi secured direct revenue percentages from Apple TV MLS Season Pass subscriptions.", "text_tr": "Normal bir maaş yerine Apple TV'nin MLS yayın aboneliklerinden doğrudan gelir payı hakkı elde etti.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 3, "text_en": "Adidas also granted him a cut of all US jersey sales, instantly turning him into an equity stakeholder.", "text_tr": "Adidas ayrıca ABD'deki tüm forma satışlarından pay vererek Messi'yi doğrudan şirketin ortağı yaptı.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 4, "text_en": "Most lucrative of all, Messi was granted ownership equity in Inter Miami without paying an entry franchise fee.", "text_tr": "Hepsinden önemlisi Messi'ye hiçbir giriş bedeli ödemeden Inter Miami kulübünden ortaklık hissesi verildi.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 5, "text_en": "Did Lionel Messi invent the smartest athlete contract in modern sports business? Tell us what you think!", "text_tr": "Lionel Messi modern spor dünyasının en zekice sözleşmesini mi icat etti? Fikrini yorumlara yaz!", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": True}
+        ]
+    },
+    "mbappe": {
+        "title_tr": "Mbappe: Real Madrid 150M€ İmza Primi! 💰👑 #shorts",
+        "description_tr": "Kylian Mbappe'nin Real Madrid'den aldığı 150 milyon euroluk imza parası ve imaj hakkı sırları! 🔔 @SportStoryTR kanalına abone olun. #shorts #futbol #mbappe #realmadrid #imzaprimi #transfer",
+        "tags_tr": ["shorts", "futbol", "kylian mbappe", "mbappe", "real madrid", "imza parası", "transfer", "maaş"],
+        "title_en": "Mbappe: Real Madrid's 150M Signing Secret! 💰👑 #shorts",
+        "description_en": "Kylian Mbappe joined Real Madrid on a 'free' transfer—yet pocketed a record €150 million signing bonus! 🔔 Subscribe to @SportStory. #shorts #football #mbappe #realmadrid",
+        "tags_en": ["shorts", "football", "soccer", "kylian mbappe", "mbappe", "real madrid", "signing bonus", "sports finance"],
+        "scenes": [
+            {"scene_idx": 1, "text_en": "Kylian Mbappe's move to Real Madrid was hailed as a free transfer, but the reality was vastly different.", "text_tr": "Kylian Mbappe'nin Real Madrid'e transferi bedava olarak kutlandı ancak perde arkası bambaşkaydı.", "visual_prompt": "cinematic football", "is_hook": True, "is_cta": False},
+            {"scene_idx": 2, "text_en": "Because Real Madrid paid no transfer fee to PSG, Mbappe demanded a staggering one-hundred-and-fifty-million-euro signing bonus.", "text_tr": "Real Madrid PSG'ye bonservis ödemediği için Mbappe tam 150 milyon euroluk devasa bir imza parası kopardı.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 3, "text_en": "Paid out across his five-year contract, this bonus adds thirty million euros every year to his standard wages.", "text_tr": "Beş yıllık sözleşmesine yayılan bu prim normal maaşının üstüne her yıl otuz milyon euro nakit ekliyor.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 4, "text_en": "Plus, he retained eighty percent of his global image rights, a privilege denied even to Cristiano Ronaldo.", "text_tr": "Üstüne Cristiano Ronaldo'ya bile verilmeyen küresel imaj haklarının yüzde seksenini elinde tuttu.", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": False},
+            {"scene_idx": 5, "text_en": "Can Real Madrid sustain this astronomical spending without wrecking their dressing room harmony? Comment below!", "text_tr": "Real Madrid soyunma odası dengesini bozmadan bu harcamayı sürdürebilir mi? Yorumlara yaz!", "visual_prompt": "cinematic football", "is_hook": False, "is_cta": True}
+        ]
     }
 }
 

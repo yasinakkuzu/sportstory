@@ -45,6 +45,7 @@ bg_*.mp4
 
 # Generated Outputs & Logs
 output/
+assets/cache/
 *.log
 factory.log
 
