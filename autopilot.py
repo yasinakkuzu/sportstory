@@ -90,21 +90,37 @@ def record_scheduled_video(video_id: str, publish_at_iso: str, local_time_str: s
 def get_next_publish_time(interval_hours: float = 12.0, lang: str = "en") -> datetime:
     """
     Kuyruktaki en son planlanmış videonun zamanını bulur ve ondan 'interval_hours' saat sonrasını döndürür.
-    Eğer kuyruk boşsa veya tüm planlar geçmişte kalmışsa, şimdiki zamandan 'interval_hours' sonrasını döndürür.
+    Eğer kuyruk boşsa veya tüm planlar geçmişte kalmışsa:
+    Hedef ülkenin en yüksek izlenme saatine (Akşam 20:00 veya Sabah 08:00 prime-time) hizalar.
     """
     queue = load_schedule_queue(lang)
     now_utc = datetime.now(timezone.utc)
-    max_time = now_utc
+    max_time = None
 
     for item in queue:
         try:
             p_time = datetime.fromisoformat(item["publish_at"].replace("Z", "+00:00"))
-            if p_time > max_time:
+            if max_time is None or p_time > max_time:
                 max_time = p_time
         except Exception:
             pass
 
-    return max_time + timedelta(hours=interval_hours)
+    if max_time is not None and max_time > now_utc:
+        return max_time + timedelta(hours=interval_hours)
+
+    # Kuyruk boşsa veya geçmişte kalmışsa en yakın prime-time slotunu hedefle (20:00 veya 08:00)
+    local_tz = timezone(timedelta(hours=3))
+    now_local = datetime.now(local_tz)
+
+    slot_evening = now_local.replace(hour=20, minute=0, second=0, microsecond=0)
+    slot_morning = (now_local + timedelta(days=1)).replace(hour=8, minute=0, second=0, microsecond=0)
+
+    if now_local < slot_evening - timedelta(hours=1):
+        target = slot_evening
+    else:
+        target = slot_morning
+
+    return target.astimezone(timezone.utc)
 
 
 def run_batch_schedule(video_count: int = 10, interval_hours: float = 12.0, lang: str = "en", watch: bool = True, topics: list = None):
