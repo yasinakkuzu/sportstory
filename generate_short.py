@@ -360,6 +360,27 @@ class MasterOrchestrator:
                 script_text=full_text,
                 scenes=[s.dict() for s in script.scenes]
             )
+
+            # Kayıt Defteri: Tüm içerik verisini kütüğe işle ve yerel ağır medya dosyalarını anında temizle
+            try:
+                from engine.content_registry import record_video_to_registry, cleanup_directory_media
+                record_video_to_registry(
+                    video_id=vid_id,
+                    title=video_title,
+                    topic=topic,
+                    language=lang,
+                    full_script=full_text,
+                    scenes=[s.dict() for s in script.scenes],
+                    description=video_desc,
+                    tags=video_tags,
+                    publish_at=publish_at,
+                    short_id=short_id
+                )
+                del_cnt, mb_freed = cleanup_directory_media(output_dir, keep_dir=False)
+                print(f"🧹 [ContentRegistry]: İçerik deftere işlendi ve yerel render çöpleri temizlendi ({del_cnt} dosya, {mb_freed} MB geri kazanıldı).")
+            except Exception as ce:
+                print(f"⚠️ [ContentRegistry] Temizleme uyarısı: {ce}")
+
             print("\n🎉 VİRAL GÖREV BAŞARILI!\n")
             return vid_id
         else:

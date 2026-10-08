@@ -86,6 +86,18 @@ def record_scheduled_video(video_id: str, publish_at_iso: str, local_time_str: s
     with open(q_file, "w", encoding="utf-8") as f:
         json.dump(queue, f, ensure_ascii=False, indent=2)
 
+    try:
+        from engine.content_registry import load_registry, save_registry
+        reg = load_registry()
+        for item in reg:
+            if item.get("video_id") == video_id:
+                item["publish_at"] = publish_at_iso
+                item["local_time"] = local_time_str
+                item["status"] = "SCHEDULED"
+        save_registry(reg)
+    except Exception:
+        pass
+
 
 def get_next_publish_time(interval_hours: float = 12.0, lang: str = "en") -> datetime:
     """
