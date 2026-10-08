@@ -40,16 +40,23 @@ class AutoDeployAgent:
         
         # Token yoksa veya süresi dolmuşsa yeniden giriş yap
         if not creds or not creds.valid:
+            refreshed = False
             if creds and creds.expired and creds.refresh_token:
-                import requests
-                from requests.adapters import HTTPAdapter
-                session = requests.Session()
-                session.mount("https://", HTTPAdapter(max_retries=3))
-                req = Request(session=session)
-                creds.refresh(req)
-                with open(target_token_file, 'wb') as token:
-                    pickle.dump(creds, token)
-            else:
+                try:
+                    import requests
+                    from requests.adapters import HTTPAdapter
+                    session = requests.Session()
+                    session.mount("https://", HTTPAdapter(max_retries=3))
+                    req = Request(session=session)
+                    creds.refresh(req)
+                    with open(target_token_file, 'wb') as token:
+                        pickle.dump(creds, token)
+                    refreshed = True
+                except Exception as e:
+                    print(f"[AutoDeploy] ⚠️ Mevcut yetki süresi dolmuş/geçersiz ({e}). Sıfırdan yeni giriş yapılıyor...")
+                    refreshed = False
+
+            if not refreshed:
                 if not os.path.exists(self.client_secrets_file):
                     print(f"\n[AutoDeploy] ⚠️ HATA: '{self.client_secrets_file}' bulunamadı!")
                     print("[AutoDeploy] Lütfen Google Cloud'dan 'Masaüstü Uygulaması' (Desktop App) JSON dosyasını indirip ana dizine koyun.")
