@@ -305,6 +305,32 @@ def run_dual_channel_production(topic_tr: str = None, topic_en: str = None, inte
     logger.info("🌍 SPORTSTORY ÇİFT KANALLI ÜRETİM (TR & GLOBAL EN)")
     logger.info("=" * 65)
 
+    # Otomatik Eşleştirme: Eksik dil varsa havuzdan veya birbirine denk konulardan eşle
+    if not topic_tr and not topic_en:
+        from engine.guards.content_guard import get_content_guard
+        guard = get_content_guard()
+        available = [t for t in CURATED_UNIFIED_PILLARS_TOPICS if not guard.is_club_on_cooldown(t["tr"], cooldown_count=4)[0]]
+        picked = available[0] if available else CURATED_UNIFIED_PILLARS_TOPICS[0]
+        topic_tr = picked["tr"]
+        topic_en = picked["en"]
+    elif topic_tr and not topic_en:
+        for t in CURATED_UNIFIED_PILLARS_TOPICS:
+            if t["tr"].lower() in topic_tr.lower() or topic_tr.lower() in t["tr"].lower():
+                topic_en = t["en"]
+                break
+        if not topic_en:
+            topic_en = topic_tr
+    elif topic_en and not topic_tr:
+        for t in CURATED_UNIFIED_PILLARS_TOPICS:
+            if t["en"].lower() in topic_en.lower() or topic_en.lower() in t["en"].lower():
+                topic_tr = t["tr"]
+                break
+        if not topic_tr:
+            topic_tr = topic_en
+
+    logger.info(f"📌 Hedef Konu (TR) : {topic_tr}")
+    logger.info(f"📌 Hedef Konu (EN) : {topic_en}")
+
     orchestrator = MasterOrchestrator()
     results = {}
 
