@@ -75,8 +75,8 @@ class AutoDeployAgent:
                 
         return build("youtube", "v3", credentials=creds)
 
-    def delete_video(self, video_id: str) -> bool:
-        youtube = self.authenticate()
+    def delete_video(self, video_id: str, lang: Optional[str] = None) -> bool:
+        youtube = self.authenticate(lang=lang or self.lang)
         if not youtube:
             return False
         try:
@@ -87,8 +87,8 @@ class AutoDeployAgent:
             print(f"[AutoDeploy] ❌ Video silinirken hata: {e}")
             return False
 
-    def update_video_title(self, video_id: str, new_title: str) -> bool:
-        youtube = self.authenticate()
+    def update_video_title(self, video_id: str, new_title: str, lang: Optional[str] = None) -> bool:
+        youtube = self.authenticate(lang=lang or self.lang)
         if not youtube:
             return False
         try:

@@ -57,37 +57,42 @@ def run_continuous_loop(interval_hours: float, lang: str = "en"):
         time.sleep(interval_seconds)
 
 
-QUEUE_FILE = Path("output/schedule_queue.json")
+def get_queue_file(lang: str = "en") -> Path:
+    if str(lang).lower() == "tr":
+        return Path("output/schedule_queue_tr.json")
+    return Path("output/schedule_queue.json")
 
 
-def load_schedule_queue() -> list:
-    if QUEUE_FILE.exists():
+def load_schedule_queue(lang: str = "en") -> list:
+    q_file = get_queue_file(lang)
+    if q_file.exists():
         try:
-            with open(QUEUE_FILE, "r", encoding="utf-8") as f:
+            with open(q_file, "r", encoding="utf-8") as f:
                 return json.load(f)
         except Exception:
             return []
     return []
 
 
-def record_scheduled_video(video_id: str, publish_at_iso: str, local_time_str: str):
-    queue = load_schedule_queue()
+def record_scheduled_video(video_id: str, publish_at_iso: str, local_time_str: str, lang: str = "en"):
+    queue = load_schedule_queue(lang)
     queue.append({
         "id": video_id,
         "publish_at": publish_at_iso,
         "local_time": local_time_str
     })
-    QUEUE_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(QUEUE_FILE, "w", encoding="utf-8") as f:
+    q_file = get_queue_file(lang)
+    q_file.parent.mkdir(parents=True, exist_ok=True)
+    with open(q_file, "w", encoding="utf-8") as f:
         json.dump(queue, f, ensure_ascii=False, indent=2)
 
 
-def get_next_publish_time(interval_hours: float = 12.0) -> datetime:
+def get_next_publish_time(interval_hours: float = 12.0, lang: str = "en") -> datetime:
     """
     Kuyruktaki en son planlanmış videonun zamanını bulur ve ondan 'interval_hours' saat sonrasını döndürür.
     Eğer kuyruk boşsa veya tüm planlar geçmişte kalmışsa, şimdiki zamandan 'interval_hours' sonrasını döndürür.
     """
-    queue = load_schedule_queue()
+    queue = load_schedule_queue(lang)
     now_utc = datetime.now(timezone.utc)
     max_time = now_utc
 
@@ -109,11 +114,12 @@ def run_batch_schedule(video_count: int = 10, interval_hours: float = 12.0, lang
     watch=True verildiğinde kotaya takılınca kapanmaz; 30 dakikada bir kontrol ederek kota açıldıkça sıradaki videoları yükler.
     Böylece bilgisayar kapansa bile YouTube videoları saatinde (12 saatte bir) kendiliğinden yayına alır!
     """
+    channel_name = "SportStory TR" if lang == "tr" else "SportStory Global"
     logger.info("=" * 65)
     logger.info("📦 SPORTSTORY TOPLU PLANLANMIŞ ÜRETİM (BATCH SCHEDULER)")
     logger.info(f"🎯 Hedef Video Sayısı: {video_count}")
     logger.info(f"⏱️ Yayın Aralığı: Her {interval_hours} Saatte Bir")
-    logger.info(f"🌐 Dil: {lang.upper()} (SportStory Global)")
+    logger.info(f"🌐 Dil: {lang.upper()} ({channel_name})")
     if watch:
         logger.info("👀 Nöbetçi Modu (Watch): AKTİF (Kota dolduğunda nöbette bekler)")
     logger.info("=" * 65)
@@ -123,7 +129,7 @@ def run_batch_schedule(video_count: int = 10, interval_hours: float = 12.0, lang
     produced_count = 0
 
     while produced_count < video_count:
-        target_time = get_next_publish_time(interval_hours)
+        target_time = get_next_publish_time(interval_hours, lang=lang)
         publish_at_iso = target_time.strftime("%Y-%m-%dT%H:%M:%SZ")
         local_time_str = target_time.astimezone().strftime("%Y-%m-%d %H:%M")
 
@@ -137,7 +143,7 @@ def run_batch_schedule(video_count: int = 10, interval_hours: float = 12.0, lang
         try:
             vid_id = orchestrator.run_autonomous_pipeline(lang, publish_at=publish_at_iso, topic=current_topic)
             if vid_id:
-                record_scheduled_video(vid_id, publish_at_iso, local_time_str)
+                record_scheduled_video(vid_id, publish_at_iso, local_time_str, lang=lang)
                 successful_uploads.append({
                     "id": vid_id,
                     "schedule": local_time_str,

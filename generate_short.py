@@ -96,16 +96,10 @@ class MasterOrchestrator:
         print(f"🎬 SPORTSTORY VİRAL OTONOM MOTOR BAŞLADI | DİL: {lang.upper()}")
         print("="*65)
         
-        # Retro Futbol Modu (PES 6, Winning Eleven & Retro Futbol Oyunları)
-        retro_bgs = ["bg_pes_retro.mp4", "bg_we_retro.mp4", "bg_pes_milan.mp4"]
+        # Retro Futbol Modu (Özel PES 6 Nostalji Futbol Oyunları)
+        retro_bgs = ["bg_pes_retro.mp4", "bg_pes_milan.mp4"]
         valid_retro_bgs = [bg for bg in retro_bgs if os.path.exists(bg)]
-        
-        if valid_retro_bgs:
-            master_bg = random.choice(valid_retro_bgs)
-        else:
-            fallback_bgs = ["master_bg.mp4", "bg_minecraft.mp4", "bg_asmr.mp4"]
-            valid_bgs = [bg for bg in fallback_bgs if os.path.exists(bg)]
-            master_bg = random.choice(valid_bgs) if valid_bgs else "bg_pes_retro.mp4"
+        master_bg = random.choice(valid_retro_bgs) if valid_retro_bgs else "bg_pes_retro.mp4"
 
         if not os.path.exists(master_bg):
             print(f"❌ HATA: Arka plan videosu bulunamadı! {master_bg} eksik.")
