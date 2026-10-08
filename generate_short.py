@@ -169,13 +169,13 @@ class MasterOrchestrator:
                 texts = [s.text_en if lang == 'en' else s.text_tr for s in script.scenes]
                 raw_script_text = " ".join(texts)
 
-                # Türkçe Spiker Denetimi ve Fonetik Normalizasyon (TurkishVoiceAuditAgent)
+                # Çift Hatlı (Dual-Track) Türkçe Metin & Spiker Denetimi (TurkishVoiceAuditAgent)
                 if lang == "tr":
-                    print("🕵️ [TurkishVoiceAuditAgent] Türkçe spiker metni denetleniyor ve fonetik uyarlama yapılıyor...")
-                    audited_speech_text, pre_report = self.voice_auditor.audit_and_correct_script(raw_script_text, language="tr")
-                    speech_to_synthesize = audited_speech_text
-                    print(f"✅ [TurkishVoiceAuditAgent] Giriş Denetimi Tamamlandı! Risk Skoru: {pre_report.get('risk_score')}/100, Düzeltme: {pre_report.get('corrections_count')}")
+                    print("🕵️ [TurkishVoiceAuditAgent] Çift Hatlı (Dual-Track) Türkçe Altyazı & Spiker Metni Denetleniyor...")
+                    display_script, speech_to_synthesize, pre_report = self.voice_auditor.audit_dual_track_scripts(raw_script_text, language="tr")
+                    print(f"✅ [TurkishVoiceAuditAgent] İmla & Fonetik Giriş Denetimi Tamamlandı! Risk Skoru: {pre_report.get('risk_score')}/100, Düzeltme: {pre_report.get('corrections_count')}")
                 else:
+                    display_script = raw_script_text
                     speech_to_synthesize = raw_script_text
                     pre_report = {"language": "en", "status": "PASSED_NON_TR"}
 
@@ -183,6 +183,7 @@ class MasterOrchestrator:
                 rate_val = "+0%" if lang == "en" else "+3%"
                 _, aligned_words = self.audio_worker.generate_voiceover(
                     script=speech_to_synthesize,
+                    display_script=display_script,
                     target_path=str(raw_voice_path),
                     voice=voice_name,
                     rate=rate_val,

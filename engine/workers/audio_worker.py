@@ -49,12 +49,14 @@ class AudioWorker:
         target_path: Path,
         voice: Optional[str] = None,
         rate: str = "+0%",
-        language: str = "tr"
+        language: str = "tr",
+        display_script: Optional[str] = None
     ) -> List[Dict[str, Any]]:
         """Edge-TTS ile fonetik uyarlamalı ve yumuşatılmış ses üretir."""
         if not voice:
             voice = "en-US-ChristopherNeural" if language == "en" else "tr-TR-AhmetNeural"
 
+        # Eğer metin önceden fonetikleştirilmediyse fonetikleştir
         if language == "tr":
             phonetic_script = prepare_speech_script(original_script)
         else:
@@ -95,8 +97,9 @@ class AudioWorker:
                             })
                             cur_t += p_dur
 
-        # Altyazı için orijinal yazılış ve noktalama ile eşleştirme
-        aligned_words = align_punctuations(spoken_words, original_script)
+        # Altyazı için görsel metin (display_script) ile eşleştirme
+        sub_script = display_script if display_script else original_script
+        aligned_words = align_punctuations(spoken_words, sub_script, language=language)
 
         # Spiker sesini yayın seviyesinde normalize et (acompressor + loudnorm)
         filter_voice = (
@@ -131,13 +134,23 @@ class AudioWorker:
         target_path: str,
         voice: Optional[str] = None,
         rate: str = "+0%",
-        language: str = "tr"
+        language: str = "tr",
+        display_script: Optional[str] = None
     ) -> Tuple[str, List[Dict[str, Any]]]:
         """Senkron arayüz üzerinden ses ve kelime zamanlamalarını üretir."""
         p_target = Path(target_path)
         p_target.parent.mkdir(parents=True, exist_ok=True)
 
-        aligned_words = asyncio.run(self._generate_edge_tts(script, p_target, voice=voice, rate=rate, language=language))
+        aligned_words = asyncio.run(
+            self._generate_edge_tts(
+                original_script=script,
+                target_path=p_target,
+                voice=voice,
+                rate=rate,
+                language=language,
+                display_script=display_script
+            )
+        )
         return str(p_target), aligned_words
 
     def mix_with_ducking(self, voice_path: str, bgm_path: Optional[str], output_path: str) -> str:

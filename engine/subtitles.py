@@ -37,64 +37,86 @@ def clean_str(s: str) -> str:
     return re.sub(r'[^\w\s]', '', s).lower()
 
 
-def align_punctuations(spoken_words_timing: list, original_script: str) -> list:
+def align_punctuations(
+    spoken_words_timing: list,
+    original_script: str,
+    language: str = "tr"
+) -> list:
     """
-    Aligns spoken word timings from edge-tts with original script tokens.
-    Uses lookahead matching so split numbers, multi-word replacements, and punctuation
-    never desynchronize the subtitle stream.
+    Aligns spoken word timings from Edge-TTS with clean display script tokens.
+    Handles multi-word spoken expansions (numbers, currencies, percentages, phonetics)
+    so that visual subtitles show proper spelling while lighting up in perfect sync.
     """
     raw_tokens = original_script.strip().split()
     aligned = []
     num_spoken = len(spoken_words_timing)
     num_tokens = len(raw_tokens)
 
+    if not raw_tokens or not spoken_words_timing:
+        return aligned
+
     sp_idx = 0
     tok_idx = 0
+
+    from engine.phonetics import normalize_turkish_speech
+    try:
+        from engine.turkish_nlp import expand_all_turkish_numbers_and_currency
+    except Exception:
+        expand_all_turkish_numbers_and_currency = lambda s: s
 
     while tok_idx < num_tokens and sp_idx < num_spoken:
         tok = raw_tokens[tok_idx]
         c_tok = clean_str(tok)
 
-        # Check phonetic match
-        expected_spoken = [c_tok]
-        for w, ph in PHONETIC_MAP.items():
-            if clean_str(w) == c_tok:
-                expected_spoken.append(clean_str(ph))
-
-        # Lookahead match up to 5 spoken words to absorb multi-word spoken tokens (e.g. "2017'de" -> "iki bin on yedide")
-        best_sp_match = None
-        for offset in range(min(5, num_spoken - sp_idx)):
-            test_sp = clean_str(spoken_words_timing[sp_idx + offset]["word"])
-            if test_sp in expected_spoken or any(exp in test_sp for exp in expected_spoken if len(exp) > 3):
-                best_sp_match = offset
-                break
-
-        if best_sp_match is not None:
-            # Consume any intervening spoken tokens as part of previous or current
-            start_t = spoken_words_timing[sp_idx]["start"]
-            sp_idx += best_sp_match
-            end_t = spoken_words_timing[sp_idx]["end"]
-            
-            aligned.append({
-                "display_word": tok,
-                "clean_word": c_tok,
-                "start": start_t,
-                "end": end_t
-            })
-            sp_idx += 1
-            tok_idx += 1
+        # 1. Determine expected spoken words for this display token
+        if language == "tr":
+            exp_text = expand_all_turkish_numbers_and_currency(tok)
+            sp_text = normalize_turkish_speech(exp_text)
+            expected_words = [clean_str(w) for w in sp_text.split() if clean_str(w)]
+            if not expected_words:
+                expected_words = [c_tok]
         else:
-            # Direct pair if no future anchor matches immediately
-            aligned.append({
-                "display_word": tok,
-                "clean_word": c_tok,
-                "start": spoken_words_timing[sp_idx]["start"],
-                "end": spoken_words_timing[sp_idx]["end"]
-            })
-            sp_idx += 1
-            tok_idx += 1
+            expected_words = [c_tok]
 
-    # Any remaining raw tokens get final timestamp
+        k = max(1, len(expected_words))
+
+        # 2. Check anchor of the NEXT token to prevent desync drift
+        if tok_idx + 1 < num_tokens:
+            next_tok = raw_tokens[tok_idx + 1]
+            if language == "tr":
+                next_exp = expand_all_turkish_numbers_and_currency(next_tok)
+                next_sp = normalize_turkish_speech(next_exp)
+                next_exp_words = [clean_str(w) for w in next_sp.split() if clean_str(w)]
+            else:
+                next_exp_words = [clean_str(next_tok)]
+            
+            next_first = next_exp_words[0] if next_exp_words else clean_str(next_tok)
+
+            # Look in a small window around sp_idx + k for next token anchor
+            for adj in [0, 1, -1, 2, -2]:
+                cand_idx = sp_idx + k + adj
+                if 0 <= cand_idx < num_spoken:
+                    cand_word = clean_str(spoken_words_timing[cand_idx]["word"])
+                    if cand_word == next_first or (len(cand_word) > 3 and cand_word in next_first):
+                        k = max(1, k + adj)
+                        break
+
+        # 3. Form the aligned entry
+        start_t = spoken_words_timing[sp_idx]["start"]
+        end_idx = min(sp_idx + k - 1, num_spoken - 1)
+        end_t = spoken_words_timing[end_idx]["end"]
+
+        aligned.append({
+            "display_word": tok,
+            "clean_word": c_tok,
+            "start": start_t,
+            "end": end_t
+        })
+
+        sp_idx += k
+        tok_idx += 1
+
+    # Any remaining raw tokens get sequential fallback timestamps
     last_end = aligned[-1]["end"] if aligned else 0.0
     while tok_idx < num_tokens:
         aligned.append({

@@ -162,10 +162,15 @@ class TurkishVoiceAuditAgent:
                     self._save_learned_entry(c_tok, auto_phonetic)
                     break
 
-        # 4. Finansal Sembol ve Rakam Normalizasyonu (€100M, $1B, £60M, %115 vb.)
-        expanded = expand_financial_notations(clean_text)
+        # 4. Finansal Sembol ve Rakam Normalizasyonu (€100M, $1B, £60M, %115, 1999'da vb.)
+        try:
+            from engine.turkish_nlp import expand_all_turkish_numbers_and_currency
+            expanded = expand_all_turkish_numbers_and_currency(clean_text)
+        except Exception:
+            expanded = expand_financial_notations(clean_text)
+
         if expanded != clean_text:
-            corrections.append({"type": "FINANCIAL_EXPANSION", "applied": "Semboller seslendirilebilir Türkçeye açıldı"})
+            corrections.append({"type": "FINANCIAL_EXPANSION", "applied": "Semboller ve sayılar seslendirilebilir Türkçeye açıldı"})
             clean_text = expanded
 
         # 5. Spiker Tonlama Kırılmalarını Yumuşatma
@@ -191,6 +196,43 @@ class TurkishVoiceAuditAgent:
 
         logger.info(f"✅ VoiceAuditAgent Giriş Denetimi Tamamlandı (Risk Skoru: {risk_score}/100, Düzeltme: {len(corrections)})")
         return clean_text, report
+
+    def audit_dual_track_scripts(
+        self,
+        raw_script: str,
+        language: str = "tr"
+    ) -> Tuple[str, str, Dict[str, Any]]:
+        """
+        Görsel Altyazı (display_script) ve Spiker Metnini (speech_script) iki ayrı hat olarak denetler.
+        Dönüş: (display_script, speech_script, pre_report)
+        - display_script: Ekranda temiz, doğru TDK imlalı ve orijinal isimli metin.
+        - speech_script: AhmetNeural'ın kusursuz okuyacağı fonetik ve tam açılımlı spiker metni.
+        """
+        if language != "tr":
+            s_soft = raw_script.replace(";", ",").replace("!", ".").replace("...", ".")
+            return raw_script, s_soft, {
+                "language": language,
+                "status": "PASSED_NON_TR",
+                "risk_score": 0,
+                "corrections": []
+            }
+
+        logger.info("🔍 VoiceAuditAgent: Çift Hatlı (Dual-Track) Türkçe Metin Ayrımı Gerçekleştiriliyor...")
+        # 1. Görsel Altyazı Denetimi (TDK İmla, Kesme İşareti, Soru Eki)
+        try:
+            from engine.turkish_nlp import audit_turkish_orthography
+            display_script, ortho_fixes = audit_turkish_orthography(raw_script)
+        except Exception as e:
+            logger.warning(f"İmla denetimi yapılamadı: {e}")
+            display_script = raw_script
+            ortho_fixes = []
+
+        # 2. Spiker Metni Denetimi & Fonetik Dönüştürme
+        speech_script, report = self.audit_and_correct_script(display_script, language="tr")
+        report["orthography_fixes"] = ortho_fixes
+        report["display_script_preview"] = display_script[:120] + "..."
+
+        return display_script, speech_script, report
 
     def audit_spoken_audio(
         self,

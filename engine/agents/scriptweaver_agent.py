@@ -502,6 +502,10 @@ STRICT NARRATIVE RULES:
     - Professional, dramatic Turkish sports documentary tone (TRT Spor / beIN Sports belgesel standardı).
     - Grammatically flawless, punchy, spoken Turkish flow (13-18 words per scene).
     - NEVER produce mechanical literal translations. Use idiomatic sports terminology.
+    - Write footballer, manager and club names in their ORIGINAL standard spelling (e.g. "Stefan Schwarz", "Kylian Mbappé", "Dennis Bergkamp", "Neil Ruddock", "Manchester City"). DO NOT write ugly phonetic spellings; our autonomous engine handles speech phonetics separately.
+    - Follow strict TDK rules: Use apostrophes for suffixes on proper nouns (e.g. "Schwarz'ın", "City'nin", "Real Madrid'e").
+    - Always separate Turkish question particles ("düşer miydi", "mümkün mü", "olur mu").
+    - Write clean dates and numbers (e.g. "1999'da", "115", "€500M", "%115").
 13. 'title_en': 35 to 50 characters MAXIMUM (including emojis and #shorts). Format: "[Curiosity Hook] [Emoji] #shorts".
 14. 'title_tr': 35 to 50 characters MAXIMUM in Turkish (including emojis and #shorts). Format: "[Merak Uyandıran Başlık] [Emoji] #shorts".
 15. 'description_en': 3-4 sentence high-retention summary with SEO keywords, ending with: "🔔 Subscribe to @SportStory for daily football finance & scandal stories." followed by 5-6 hashtags.

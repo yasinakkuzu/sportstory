@@ -138,6 +138,57 @@ MASTER_PHONETIC_LEXICON: Dict[str, str] = {
     "Samuel Eto'o": "Samuel Eto",
     "Eto'o": "Samuel Eto",
 
+    # --- PİLLAR 1: ABSÜRT SÖZLEŞME VE TRİVİA KAHRAMANLARI ---
+    "Stefan Schwarz": "Ştefan Şvars",
+    "Schwarz'ın": "Şvars'ın",
+    "Schwarz'a": "Şvars'a",
+    "Schwarz'ı": "Şvars'ı",
+    "Schwarz'da": "Şvars'ta",
+    "Schwarz": "Şvars",
+    "Dennis Bergkamp": "Denis Bırgkamp",
+    "Bergkamp'ın": "Bırgkamp'ın",
+    "Bergkamp'a": "Bırgkamp'a",
+    "Bergkamp": "Bırgkamp",
+    "Neil Ruddock": "Nil Radık",
+    "Ruddock'ın": "Radık'ın",
+    "Ruddock'a": "Radık'a",
+    "Ruddock": "Radık",
+    "Giuseppe Reina": "Cüzeppe Reyna",
+    "Reina'nın": "Reyna'nın",
+    "Reina'ya": "Reyna'ya",
+    "Reina": "Reyna",
+    "Ronaldinho": "Ronaldiinyo",
+    "Ronaldinho'nun": "Ronaldiinyo'nun",
+    "Ronaldinho'ya": "Ronaldiinyo'ya",
+    "Ali Dia": "Ali Diya",
+    "Ali Dia'nın": "Ali Diya'nın",
+    "Spencer Prior": "Spensır Prayır",
+    "Prior": "Prayır",
+    "Graeme Souness": "Gıreym Sunıs",
+    "Souness": "Sunıs",
+    "Harry Redknapp": "Heri Rednep",
+    "Redknapp": "Rednep",
+    "George Weah": "Corc Viya",
+    "Weah": "Viya",
+    "Luis Suarez": "Luis Suares",
+    "Luis Suárez": "Luis Suares",
+    "Suarez": "Suares",
+    "Roberto Firmino": "Roberto Firmino",
+    "Firmino'nun": "Firmino'nun",
+    "Firmino": "Firmino",
+
+    # --- PİLLAR 3: SERVETLER & DİĞER İSİMLER ---
+    "Peter Ridsdale": "Pitır Ridsdeyl",
+    "Ridsdale": "Ridsdeyl",
+    "Rio Ferdinand": "Riyo Fördinand",
+    "Ferdinand": "Fördinand",
+    "Arthur Melo": "Artur Melo",
+    "Arthur": "Artur",
+    "Miralem Pjanic": "Miralem Pyaniç",
+    "Miralem Pjanić": "Miralem Pyaniç",
+    "Pjanic": "Pyaniç",
+    "Pjanić": "Pyaniç",
+
     # --- TEKNİK DİREKTÖRLER & YÖNETİCİLER ---
     # NOT: Guardiola DOĞRUDAN 'Guardiola' olarak okunur; asla Gvardiyola yapılmaz!
     "Carlo Ancelotti": "Karlo Ançelotti",
@@ -212,10 +263,28 @@ MASTER_PHONETIC_LEXICON: Dict[str, str] = {
     "Oaktree Capital": "Oktri Kapital",
     "Oaktree": "Oktri",
     "777 Partners": "Yedi Yedi Yedi Partnırs",
+    "Sunderland": "Sandırlınd",
+    "Sunderland'e": "Sandırlınd'e",
+    "Sunderland'in": "Sandırlınd'in",
+    "Southampton": "Sauthemptın",
+    "Southampton'da": "Sauthemptın'da",
+    "Crystal Palace": "Kristal Palas",
+    "Arminia Bielefeld": "Arminya Bilefelt",
+    "Arminia Bielefeld'e": "Arminya Bilefelt'e",
+    "Bielefeld": "Bilefelt",
+    "Al Nassr": "El Nasır",
+    "Al Nassr'da": "El Nasır'da",
+    "Al Hilal": "El Hilal",
+    "Al Hilal'e": "El Hilal'e",
+    "Apple TV": "Epıl Te-Ve",
+    "Apple TV'nin": "Epıl Te-Ve'nin",
+    "Apple": "Epıl",
 
     # --- KISALTMALAR & TERİMLER ---
+    "115": "yüz on beş",
     "PSR": "Pe-Se-Re",
     "FFP": "Fe-Fe-Pe",
+    "DNCG": "De-En-Ce-Ge",
     "UEFA'nın": "U-e-fa'nın",
     "UEFA'ya": "U-e-fa'ya",
     "UEFA": "U-e-fa",
@@ -227,6 +296,7 @@ MASTER_PHONETIC_LEXICON: Dict[str, str] = {
     "NFL": "En-Ef-El",
     "NBA": "En-Bi-Ey",
     "MLS": "Em-El-Es",
+    "CR7": "Ce-Re-Yedi",
     "Ballon d'Or": "Balon Dor",
     "Ballon D'or": "Balon Dor",
     "Ballon Dor": "Balon Dor"
@@ -311,8 +381,12 @@ def normalize_turkish_speech(script: str) -> str:
     """
     spoken = script
 
-    # 1. Finansal Semboller ve Rakamları Genişlet
-    spoken = expand_financial_notations(spoken)
+    # 1. Finansal Semboller, Rakamlar ve Yılları Tam Türkçe Kelimelere Genişlet
+    try:
+        from engine.turkish_nlp import expand_all_turkish_numbers_and_currency
+        spoken = expand_all_turkish_numbers_and_currency(spoken)
+    except Exception as e:
+        spoken = expand_financial_notations(spoken)
 
     # 2. Sözlükteki uzun ifadeler önce çalışacak şekilde sırala ve kelime sınırı (\b) uygula
     sorted_lexicon = sorted(MASTER_PHONETIC_LEXICON.items(), key=lambda x: len(x[0]), reverse=True)
