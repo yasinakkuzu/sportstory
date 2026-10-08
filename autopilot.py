@@ -339,22 +339,40 @@ def run_dual_channel_production(topic_tr: str = None, topic_en: str = None, inte
     iso_tr = time_tr.strftime("%Y-%m-%dT%H:%M:%SZ")
     local_tr = time_tr.astimezone().strftime("%Y-%m-%d %H:%M")
     logger.info(f"\n🇹🇷 [1/2] SPORTSTORY TR ÜRETİMİ BAŞLIYOR... Hedef Yayın: {local_tr}")
-    vid_tr = orchestrator.run_autonomous_pipeline(lang="tr", publish_at=iso_tr, topic=topic_tr)
-    if vid_tr:
-        record_scheduled_video(vid_tr, iso_tr, local_tr, lang="tr")
-        results["tr"] = {"id": vid_tr, "schedule": local_tr, "publish_at": iso_tr}
-        logger.info(f"✅ SportStory TR Videosu Başarıyla Planlandı: https://youtu.be/{vid_tr}")
+    try:
+        vid_tr = orchestrator.run_autonomous_pipeline(lang="tr", publish_at=iso_tr, topic=topic_tr)
+        if vid_tr:
+            record_scheduled_video(vid_tr, iso_tr, local_tr, lang="tr")
+            results["tr"] = {"id": vid_tr, "schedule": local_tr, "publish_at": iso_tr}
+            logger.info(f"✅ SportStory TR Videosu Başarıyla Planlandı: https://youtu.be/{vid_tr}")
+    except Exception as e:
+        err_str = str(e)
+        if "uploadLimitExceeded" in err_str or "quotaExceeded" in err_str:
+            logger.warning("🛑 [SportStory TR] Günlük YouTube yükleme sınırına (uploadLimitExceeded) ulaşıldı!")
+            logger.info("ℹ️ YouTube yeni ve standart kanallara 24 saatte maksimum 5-10 video yükleme hakkı tanır.")
+            logger.info("ℹ️ SportStory TR kanalında önümüzdeki 3 gün boyunca saatinde yayına girecek 5 video hazır durumdadır.")
+            results["tr"] = {"status": "DAILY_LIMIT_REACHED", "error": "uploadLimitExceeded"}
+        else:
+            raise e
 
     # 2. GLOBAL KANAL (SportStory Global)
     time_en = get_next_publish_time(interval_hours, lang="en")
     iso_en = time_en.strftime("%Y-%m-%dT%H:%M:%SZ")
     local_en = time_en.astimezone().strftime("%Y-%m-%d %H:%M")
     logger.info(f"\n🌐 [2/2] SPORTSTORY GLOBAL (EN) ÜRETİMİ BAŞLIYOR... Hedef Yayın: {local_en}")
-    vid_en = orchestrator.run_autonomous_pipeline(lang="en", publish_at=iso_en, topic=topic_en)
-    if vid_en:
-        record_scheduled_video(vid_en, iso_en, local_en, lang="en")
-        results["en"] = {"id": vid_en, "schedule": local_en, "publish_at": iso_en}
-        logger.info(f"✅ SportStory Global Videosu Başarıyla Planlandı: https://youtu.be/{vid_en}")
+    try:
+        vid_en = orchestrator.run_autonomous_pipeline(lang="en", publish_at=iso_en, topic=topic_en)
+        if vid_en:
+            record_scheduled_video(vid_en, iso_en, local_en, lang="en")
+            results["en"] = {"id": vid_en, "schedule": local_en, "publish_at": iso_en}
+            logger.info(f"✅ SportStory Global Videosu Başarıyla Planlandı: https://youtu.be/{vid_en}")
+    except Exception as e:
+        err_str = str(e)
+        if "uploadLimitExceeded" in err_str or "quotaExceeded" in err_str:
+            logger.warning("🛑 [SportStory Global] Günlük YouTube yükleme sınırına (uploadLimitExceeded) ulaşıldı!")
+            results["en"] = {"status": "DAILY_LIMIT_REACHED", "error": "uploadLimitExceeded"}
+        else:
+            raise e
 
     return results
 
@@ -387,17 +405,29 @@ def run_dual_batch_schedule(video_count: int = 4, interval_hours: float = 12.0, 
             "results": res
         })
 
+        tr_res = res.get("tr", {})
+        en_res = res.get("en", {})
+        if tr_res.get("status") == "DAILY_LIMIT_REACHED" and en_res.get("status") == "DAILY_LIMIT_REACHED":
+            logger.warning("\n🛑 Her iki kanalın da günlük YouTube yükleme limiti doldu.")
+            if watch:
+                logger.info("⏳ NÖBET MODU: 1 saat sonra YouTube limitleri tekrar kontrol edilecek...")
+                time.sleep(3600)
+                continue
+            else:
+                logger.info("Mevcut günlük limit dolduruldu. Yarın limit sıfırlandığında devam edebilirsiniz.")
+                break
+
     logger.info("\n" + "=" * 65)
     logger.info("🏆 ÇİFT KANALLI TÜM VİDEOLAR BAŞARIYLA YAYINA PLANLANDI!")
     logger.info("=" * 65)
     for i, p in enumerate(completed_pairs, 1):
-        tr_id = p["results"].get("tr", {}).get("id", "N/A")
-        tr_time = p["results"].get("tr", {}).get("schedule", "N/A")
-        en_id = p["results"].get("en", {}).get("id", "N/A")
-        en_time = p["results"].get("en", {}).get("schedule", "N/A")
+        tr_id = p["results"].get("tr", {}).get("id", "LIMIT DOLDU")
+        tr_time = p["results"].get("tr", {}).get("schedule", "-")
+        en_id = p["results"].get("en", {}).get("id", "LIMIT DOLDU")
+        en_time = p["results"].get("en", {}).get("schedule", "-")
         logger.info(f"{i}. [{p['pillar']}]")
-        logger.info(f"   🇹🇷 TR : https://youtu.be/{tr_id} ({tr_time})")
-        logger.info(f"   🌐 EN : https://youtu.be/{en_id} ({en_time})")
+        logger.info(f"   🇹🇷 TR : {'https://youtu.be/' + tr_id if tr_id != 'LIMIT DOLDU' else 'Günlük Limit Doldu'} ({tr_time})")
+        logger.info(f"   🌐 EN : {'https://youtu.be/' + en_id if en_id != 'LIMIT DOLDU' else 'Günlük Limit Doldu'} ({en_time})")
     return completed_pairs
 
 

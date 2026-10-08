@@ -370,7 +370,15 @@ class MasterOrchestrator:
             print(f"\n🛑 [ContentGuard REDDİ]: YouTube yüklemesi durduruldu! Sebep: {guard_reason}")
             return None
 
-        vid_id = self.deployer.deploy(str(final_video_path), lang, metadata_path=str(meta_file), publish_at=publish_at)
+        try:
+            vid_id = self.deployer.deploy(str(final_video_path), lang, metadata_path=str(meta_file), publish_at=publish_at)
+        except Exception as e:
+            try:
+                from engine.content_registry import cleanup_directory_media
+                cleanup_directory_media(output_dir, keep_dir=False)
+            except Exception:
+                pass
+            raise e
         if vid_id:
             self.guard.record_video(
                 video_id=vid_id,
